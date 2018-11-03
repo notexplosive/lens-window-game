@@ -20,7 +20,7 @@ end
 
 function AppTemplate:spawn(args)
     local w = Window.new(self.name,self.width,self.height)
-    w.canvasDraw = self.canvasDraw
+    w.canvasDraw = self.draw
     w.canvasUpdate = self.update
     w.icon = self.icon
     w.pos = AppTemplate.positions[self.name]:clone()
@@ -38,7 +38,7 @@ function AppTemplate:spawn(args)
     end
 
     --AppTemplate.positions[self.name] = AppTemplate.positions[self.name] + Vector.new(32,32)
-    self:init(w,args)
+    self:onStart(w,args)
     w:bringToFront()
     return w
 end

@@ -6,8 +6,9 @@ local Apps = require('apps')
 local Filesystem = require('system/filesystem')
 
 -- EXPLORER
-Apps.explorer = AppTemplate.new('File Locater','locater',450,450,
-function(self,window,args)
+Apps.explorer = AppTemplate.new('File Locater','locater',450,450);
+
+function Apps.explorer:onStart(window,args)
     if args == nil then
         args = ''
     else
@@ -19,15 +20,15 @@ function(self,window,args)
     window.state.content = Filesystem.inGameLS(args)
 
     window.state.selectedIndex = nil
-end,
+end
 
-function(self,selected,mp)
+function Apps.explorer:draw(selected,mp)
     love.graphics.setColor(1,1,1,1)
     local w,h = self.canvas:getDimensions()
     love.graphics.rectangle('fill', 1, 1, w-2, h-2)
 
     drawIcons(self.state,selected,mp,false,self)
-end)
+end
 
 function Apps.explorer:keyPress(key,isDesktop)
     if key == 'return' then
