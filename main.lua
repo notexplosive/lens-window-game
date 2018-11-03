@@ -17,6 +17,9 @@ local moonshine = require('moonshine')
 
 gScrollIncrement = Window.OSFont:getHeight() * 5
 
+love.audio.setVolume(0.5)
+love.audio.newSource('sounds/login.ogg', 'static'):play()
+
 function executeFile(filename,data)
     local splitOnDot = filename:split('.')
     local format = splitOnDot[#splitOnDot]

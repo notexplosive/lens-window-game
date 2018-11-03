@@ -4,6 +4,8 @@ local Window = require('system/window')
 function love.mousepressed(x, y, button, isTouch)
     gSelectedControlButton = nil
 
+    love.audio.newSource('sounds/mousedown.ogg', 'static'):play()
+
     if button == 1 then
         gClickedThisFrame = true
         gSelectedWindow = nil
@@ -35,6 +37,11 @@ end
 
 
 function love.mousereleased(x, y, button, isTouch)
+
+    local snd = love.audio.newSource('sounds/mousedown.ogg', 'static')
+    snd:setPitch(0.9)
+    snd:play()
+
     if button == 1 then
         gDragging = false
         gSelectedWindow = nil
@@ -80,7 +87,7 @@ end
 
 function love.mousefocus(f)
     if not f then
-        love.mousereleased(0,0,1)
+        love.mousereleased(0,0,1,false)
     end
 end
 
