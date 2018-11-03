@@ -1,0 +1,18 @@
+Thanks so much for playing my game <3
+I hope you enjoy it!
+
+Programmed by nxplv
+Written by nxplv
+Graphics by nxplv
+
+Written in LÖVE2D
+
+Fonts:
+ChevyRay - SoftSquare, Vector Mono
+Roboto - Christian Robertson
+
+Music:
+
+
+Special Thanks:
+Jackelmore
