@@ -32,7 +32,8 @@ function Window.new(title,width,height)
     self.children = {}
 
     -- Draw function for the windows canvas
-    function self.canvasDraw() end -- not implemented on purpose
+    -- not implemented on purpose, as they are to be overwritten
+    function self.canvasDraw() end
     function self.textInput() end
     function self.keyPress() end
     function self.scroll() end

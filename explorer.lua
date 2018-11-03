@@ -1,12 +1,12 @@
 local Vector = require('nx/vector')
 local Window = require('system/window')
 local Icons = require('system/icons')
-local AppInstance = require('appinstance')
+local AppTemplate = require('apptemplate')
 local Apps = require('apps')
 local Filesystem = require('system/filesystem')
 
 -- EXPLORER
-Apps.explorer = AppInstance.new('File Locater','locater',450,450,
+Apps.explorer = AppTemplate.new('File Locater','locater',450,450,
 function(self,window,args)
     if args == nil then
         args = ''
