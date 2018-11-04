@@ -1,7 +1,12 @@
 local Vector = require('nx/vector')
 local Window = require('system/window')
+local State = require('system/state')
 
 function love.mousepressed(x, y, button, isTouch)
+    if not State.isLoggedIn then
+        return 
+    end
+
     gSelectedControlButton = nil
 
     love.audio.newSource('sounds/mousedown.ogg', 'static'):play()
@@ -38,6 +43,10 @@ end
 
 function love.mousereleased(x, y, button, isTouch)
 
+    if not State.isLoggedIn then
+        return 
+    end
+    
     local snd = love.audio.newSource('sounds/mousedown.ogg', 'static')
     snd:setPitch(0.9)
     snd:play()

@@ -17,8 +17,10 @@ local moonshine = require('moonshine')
 
 gScrollIncrement = Window.OSFont:getHeight() * 5
 
+local heroFont = love.graphics.newFont('fonts/Roboto.woff',64)
+local sideKickFont = love.graphics.newFont('fonts/Roboto.woff',32)
+
 love.audio.setVolume(0.5)
-love.audio.newSource('sounds/login.ogg', 'static'):play()
 
 function executeFile(filename,data)
     local splitOnDot = filename:split('.')
@@ -119,15 +121,37 @@ function lastDraw()
     --love.graphics.draw(cursorImage,mx-16,my-16)
     menuBar:draw(0,love.graphics.getHeight() - Window.menuBarHeight)
 
-    mousePointer:draw()
+    if State.isLoggedIn then
+        mousePointer:draw()
+    else
+        love.graphics.setColor(0.5,0.5,1)
+        love.graphics.rectangle('fill', 0, 0, love.graphics.getDimensions())
+
+        love.graphics.setColor(1,1,1)
+        love.graphics.setFont(heroFont)
+        love.graphics.print("Macrolabs WandOS")
+        love.graphics.setFont(sideKickFont)
+        love.graphics.print("Logging you in...",0,64)
+    end
+
     gClickedThisFrame = false
     gDoubleClickedThisFrame = false
 end
 
 local doubleClickTimer = 0
+local loginTimer = 0
 function lastUpdate(dt)
     menuBar:update(dt)
     doubleClickTimer = doubleClickTimer - dt
+
+    if not State.isLoggedIn then
+        loginTimer = loginTimer + dt
+        
+        if loginTimer > 2 then
+            State.isLoggedIn = true
+            love.audio.newSource('sounds/login.ogg', 'static'):play()
+        end
+    end
 
     if gClickedThisFrame then
         if doubleClickTimer > 0 then
