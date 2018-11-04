@@ -124,14 +124,16 @@ function lastDraw()
     if State.isLoggedIn then
         mousePointer:draw()
     else
-        love.graphics.setColor(0.5,0.5,1)
+        love.graphics.setColor(0.5,0.5,0.8)
         love.graphics.rectangle('fill', 0, 0, love.graphics.getDimensions())
+        love.graphics.setColor(0.8,0.8,1)
+        love.graphics.line(love.graphics.getWidth()/2,32,love.graphics.getWidth()/2,love.graphics.getHeight()-64)
 
         love.graphics.setColor(1,1,1)
         love.graphics.setFont(heroFont)
-        love.graphics.print("Macrolabs WandOS")
+        love.graphics.print("Wonders NX",love.graphics.getWidth()/2+10,love.graphics.getHeight()/2 - 64)
         love.graphics.setFont(sideKickFont)
-        love.graphics.print("Logging you in...",0,64)
+        love.graphics.print("Macrolabs Corporation",love.graphics.getWidth()/2+10,love.graphics.getHeight()/2)
     end
 
     gClickedThisFrame = false

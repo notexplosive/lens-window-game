@@ -1,6 +1,6 @@
 function love.conf(t)
     t.version = "11.0"
-    t.window.title = "Window"
+    t.window.title = "Wonders"
     t.window.resizable = true
     --t.window.fullscreen = true
     t.window.icon = 'images/favicon.png'

@@ -130,10 +130,15 @@ function Window:draw(x,y)
             local quad = Window.controlButtonQuads[i]
             local image = Window.controlButtonImage
             
-            if gSelectedControlButton == i and selected then
-                love.graphics.setColor(0.7,0.7,0.7)
-            else
+            love.graphics.setColor(.9,.9,1)
+            local mx,my = love.mouse.getPosition()
+            local isHover = isWithinBox(mx,my,self:getControlButtonPosition(i))
+            if isHover then
                 love.graphics.setColor(1,1,1)
+            end
+
+            if gSelectedControlButton == i and selected and isHover then
+                love.graphics.setColor(0.7,0.7,0.7)
             end
 
             love.graphics.draw(image,quad,cbx,cby,0,0.9,0.9)
