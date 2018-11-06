@@ -54,6 +54,10 @@ local testw = Window.new("test",320,280)
 testw:close()
 
 
+function love.load(arg)
+    State:load()
+end
+
 local desktopState = {
     dir = 'Desktop',
     content = {
@@ -117,6 +121,8 @@ function firstDraw()
     drawIcons(desktopState,true,mp,true)
 end
 
+local OSLogo = love.graphics.newImage('images/wonders.png')
+
 function lastDraw()
     --love.graphics.draw(cursorImage,mx-16,my-16)
     menuBar:draw(0,love.graphics.getHeight() - Window.menuBarHeight)
@@ -126,12 +132,14 @@ function lastDraw()
     else
         love.graphics.setColor(0.5,0.5,0.8)
         love.graphics.rectangle('fill', 0, 0, love.graphics.getDimensions())
+        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.draw(OSLogo,love.graphics.getWidth()/2 - 256,love.graphics.getHeight()/2 - 128 - 32,0,2,2)
         love.graphics.setColor(0.8,0.8,1)
         love.graphics.line(love.graphics.getWidth()/2,32,love.graphics.getWidth()/2,love.graphics.getHeight()-64)
 
         love.graphics.setColor(1,1,1)
         love.graphics.setFont(heroFont)
-        love.graphics.print("Wonders NX",love.graphics.getWidth()/2+10,love.graphics.getHeight()/2 - 64)
+        love.graphics.print("Wonders nX",love.graphics.getWidth()/2+10,love.graphics.getHeight()/2 - 64)
         love.graphics.setFont(sideKickFont)
         love.graphics.print("Macrolabs Corporation",love.graphics.getWidth()/2+10,love.graphics.getHeight()/2)
     end
@@ -149,9 +157,13 @@ function lastUpdate(dt)
     if not State.isLoggedIn then
         loginTimer = loginTimer + dt
         
-        if loginTimer > 2 then
-            State.isLoggedIn = true
+        if loginTimer > 1.5 and not State.loginSoundPlayed then
             love.audio.newSource('sounds/login.ogg', 'static'):play()
+            State.loginSoundPlayed = true
+        end
+
+        if loginTimer > 3 then
+            State.isLoggedIn = true
         end
     end
 

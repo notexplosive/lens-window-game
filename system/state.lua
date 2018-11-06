@@ -1,8 +1,15 @@
 State = {}
 
-DEBUG = true
+DEBUG = false
 
 State.isLoggedIn = false or DEBUG
+
+function State:load()
+    local lines = love.filesystem.read('savefile'):split('\n')
+    for i,line in ipairs(lines) do
+        State[line] = true
+    end
+end
 
 -- Sets a flag and then writes it to disk
 function State:persist(flagName,bool)
@@ -41,6 +48,10 @@ function _saveToDisk(flagName,bool)
     end
 
     love.filesystem.write('savefile',newSaveData)
+end
+
+if not love.filesystem.getInfo('savefile') then
+    love.filesystem.write('savefile','')
 end
 
 return State
