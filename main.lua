@@ -128,6 +128,25 @@ function lastDraw()
     menuBar:draw(0,love.graphics.getHeight() - Window.menuBarHeight)
 
     if State.isLoggedIn then
+        mousePointer:setFlip(false)
+        mousePointer:setQuad('pointer')
+
+        local topWindow = Window.getTopWindow()
+        local corner = nil
+        if topWindow then
+            corner = topWindow.hoverCorner
+            if not corner then
+                corner = topWindow.selectedCorner
+            end
+        end
+        if topWindow and corner then
+            mousePointer:setQuad('diagonal')
+            if corner == 'bottomRight' or corner == 'topLeft' then
+                mousePointer:setFlip(false)
+            else
+                mousePointer:setFlip(true)
+            end
+        end
         mousePointer:draw()
     else
         love.graphics.setColor(0.5,0.5,0.8)

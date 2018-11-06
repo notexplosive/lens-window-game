@@ -42,7 +42,6 @@ end
 
 
 function love.mousereleased(x, y, button, isTouch)
-
     if not State.isLoggedIn then
         return 
     end
@@ -83,13 +82,15 @@ end
 function love.mousemoved(x, y, dx, dy)
     local pos = Vector.new(x,y)
     local vel = Vector.new(dx,dy)
-    if love.mouse.isDown(1) and gSelectedWindow ~= nil and gDragging then
-        gSelectedWindow.pos = gSelectedWindow.pos + vel
+    if love.mouse.isDown(1) then
+        if gSelectedWindow ~= nil and gDragging then
+            gSelectedWindow.pos = gSelectedWindow.pos + vel
 
-        if gSelectedWindow.fullscreen and dy > 1 then
-            gSelectedWindow:setFullscreen(false)
-            gSelectedWindow.pos.x = x - gSelectedWindow.width/2
-            gSelectedWindow.pos.y = 0
+            if gSelectedWindow.fullscreen and dy > 1 then
+                gSelectedWindow:setFullscreen(false)
+                gSelectedWindow.pos.x = x - gSelectedWindow.width/2
+                gSelectedWindow.pos.y = 0
+            end
         end
     end
 end

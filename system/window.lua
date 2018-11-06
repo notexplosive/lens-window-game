@@ -29,6 +29,7 @@ function Window.new(title,width,height)
     self.canvas = love.graphics.newCanvas(width,height)
     self.icon = nil
     self.visible = true
+    self.selectedCorner = nil
     self.children = {}
 
     -- Draw function for the windows canvas
@@ -145,6 +146,9 @@ function Window:draw(x,y)
         end
     end
 
+    self.hoverCorner = nil
+    self:handleResizing()
+
     -- Canvas
     local canvasX = hx + Window.borderWidth
     local canvasY = hy + Window.headerHeight
@@ -244,7 +248,7 @@ function Window:getHover()
     if mx > x and
         my > y and
         mx < x + width and
-        my < y + height + Window.headerHeight then
+        my < y + height then
         return true
     end
 end
@@ -273,6 +277,108 @@ function Window:getCanvasPositions()
         hy + Window.headerHeight,
         hwidth - Window.borderWidth * 2,
         wheight - Window.headerHeight - Window.borderWidth
+end
+
+function Window:handleResizing()
+    -- This is spaghetti mess
+    if not love.mouse.isDown(1) then
+        self.selectedCorner = nil
+    end
+
+    local topWindow = nil
+    for i,v in ipairs(nx_AllDrawableObjects) do
+        if v.type == Window then
+            topWindow = v
+            break
+        end
+    end
+
+    -- Top window is different from being in focus!
+    if topWindow == self then
+        local left,top,width,height = self:getBackgroundPositions()
+        local right,bottom = left+width,top+height
+        local pointNames = {'topLeft','topRight','bottomLeft','bottomRight'}
+        local points = {
+            Vector.new(left,top),
+            Vector.new(right,top),
+            Vector.new(left,bottom),
+            Vector.new(right,bottom)
+        }
+        local pointMap ={
+            topLeft=points[1],
+            topRight=points[2],
+            bottomLeft=points[3],
+            bottomRight=points[4]
+        }
+
+        local mousePos = Vector.new(love.mouse.getPosition())
+
+        if not isWithinBox(mousePos.x,mousePos.y,left,top,width,height) then
+            local radiusFromCorner = 24
+
+            if self.selectedCorner == nil and gSelectedControlButton == nil and gSelectedWindow == nil then
+                for i,pointName in ipairs(pointNames) do
+                    local diff = mousePos - points[i]
+                    local distance = diff:length()
+                    if distance < radiusFromCorner then
+                        self.hoverCorner = pointName
+                        if love.mouse.isDown(1) then
+                            self.selectedCorner = pointName
+                            break
+                        end
+                    end
+                end
+            end
+        end
+        
+        if self.selectedCorner then
+            self:bringToFront()
+            local diff = mousePos - pointMap[self.selectedCorner]
+            if self.selectedCorner == 'bottomRight' then
+                self.width = self.width + diff.x
+                self.height = self.height + diff.y
+            end
+
+            if self.selectedCorner == 'bottomLeft' then
+                self.pos.x = self.pos.x + diff.x
+                self.width = self.width - diff.x
+                self.height = self.height + diff.y
+            end
+
+            if self.selectedCorner == 'topRight' then
+                self.width = self.width + diff.x
+                self.height = self.height - diff.y
+                self.pos.y = self.pos.y + diff.y
+            end
+
+            if self.selectedCorner == 'topLeft' then
+                self.width = self.width - diff.x
+                self.pos.x = self.pos.x + diff.x
+                self.height = self.height - diff.y
+                self.pos.y = self.pos.y + diff.y
+            end
+
+            if self.width < self:minimumWidth() then
+                local d = self.width - self:minimumWidth()
+                self.width = self:minimumWidth()
+                if self.selectedCorner == 'bottomLeft' then
+                    self.pos.x = self.pos.x + d
+                end
+                
+                if self.selectedCorner == 'topLeft' then
+                    self.pos.x = self.pos.x + d
+                end
+            end
+    
+            if self.height < 1 then
+                self.height = 1
+            end
+        end
+    end
+end
+
+function Window:minimumWidth()
+    return 32 + Window.controlButtonSize * 3 + Window.OSFont:getWidth(self.title)
 end
 
 function Window:bringNextWindowToFront()
@@ -312,6 +418,24 @@ end
 
 function Window:inFocus()
     return nx_AllDrawableObjects[1] == self
+end
+
+function Window.getFocusWindow()
+    if nx_AllDrawableObjects[1].type == Window then
+        return nx_AllDrawableObjects[1]
+    end
+
+    return nil
+end
+
+function Window.getTopWindow()
+    for i,v in ipairs(nx_AllDrawableObjects) do
+        if nx_AllDrawableObjects[i].type == Window then
+            return nx_AllDrawableObjects[i]
+        end
+    end
+
+    return nil
 end
 
 return Window

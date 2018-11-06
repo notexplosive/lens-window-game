@@ -10,13 +10,27 @@ function MousePointer.new()
     self.quads['diagonal'] = love.graphics.newQuad(192,0,64,64, cursorImages:getDimensions())
     self.quads['sideways'] = love.graphics.newQuad(0,0,64,64, cursorImages:getDimensions())
     self.currentQuad = 'pointer'
+    self.flip = false
     return self
 end
 
 function MousePointer:draw(x,y)
     love.graphics.setColor(1,1,1,1)
     local mx,my = love.mouse.getPosition()
-    love.graphics.draw(cursorImages,self.quads[self.currentQuad],mx-16,my-16)
+    local sx = 1
+    if self.flip then
+        sx = -1
+    end
+
+    love.graphics.draw(cursorImages,self.quads[self.currentQuad],mx,my,0,sx,1,16,16)
+end
+
+function MousePointer:setQuad(name)
+    self.currentQuad = name
+end
+
+function MousePointer:setFlip(bool)
+    self.flip = bool
 end
 
 return MousePointer
