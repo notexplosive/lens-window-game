@@ -6,9 +6,9 @@ require('system/mouse')
 local Vector = require('nx/vector')
 local Window = require('system/window')
 local MenuBar = require('system/menubar')
-local Explorer = require('explorer')
-local Apps = require('apps')
+--local Explorer = require('explorer')
 local Filesystem = require('system/filesystem')
+local Apps = require('apps')
 
 local MousePointer = require('system/mousepointer')
 mousePointer = MousePointer.new()
@@ -27,7 +27,7 @@ function executeFile(filename,data)
     local format = splitOnDot[#splitOnDot]
 
     if format == 'txt' then
-        LaunchApp('notepad',filename)
+        LaunchApp('textboy',filename)
     end
 
     if format == 'exe' then
@@ -44,6 +44,7 @@ function executeFile(filename,data)
 end
 
 function LaunchApp(appName,args)
+    print(appName,args)
     return Apps[appName]:spawn(args)
 end
 
@@ -58,17 +59,7 @@ function love.load(arg)
     State:load()
 end
 
-local desktopState = {
-    dir = 'Desktop',
-    content = {
-        {icon = 'locater', name = 'Locater.exe', app = 'explorer'},
-        {icon = 'textboy', name = 'TextBoy.exe', app = 'notepad'},
-        {icon = 'internet', name = 'Netscrape.exe', app = 'internet'},
-        {icon = 'shell', name = 'shll.exe', app = 'shell'},
-        {icon = 'app', name = 'sun.exe', app = 'sun'},
-        {icon = 'app', name = 'lens.exe', app = 'lens'}
-    }
-}
+desktopState.dir = 'Desktop'
 
 love.keyboard.setKeyRepeat(true)
 function love.keypressed(key, scancode, isrepeat)
@@ -92,20 +83,6 @@ function love.textinput(text)
 end
 
 local menuBar = MenuBar.new()
-
-function createFileObject(filename)
-    local ext = filename:split('.')[2]
-    local ic = 'app'
-    if ext == 'txt' then
-        ic = 'text'
-    end
-
-    return {icon=ic,name=filename}
-end
-
-function createFolderObject(filename,path)
-    return {icon='folder',name=filename, dir=path..filename..'/'}
-end
 
 -- Initialize desktop
 local content = Filesystem.inGameLS('Desktop')

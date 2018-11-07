@@ -25,6 +25,7 @@ function Window.new(title,width,height)
     self.height = height
     self.title = title
     self.enabledControlButtons = {true,true,true}
+    self.allowResizing = self.enabledControlButtons[2]
     self.fullscreen = false
     self.canvas = love.graphics.newCanvas(width,height)
     self.icon = nil
@@ -38,6 +39,7 @@ function Window.new(title,width,height)
     function self.textInput() end
     function self.keyPress() end
     function self.scroll() end
+    function self.onResize() end
 
     -- Any userdata needed for the draw function
     self.state = {} -- empty on purpose
@@ -147,7 +149,9 @@ function Window:draw(x,y)
     end
 
     self.hoverCorner = nil
-    self:handleResizing()
+    if self.enabledControlButtons[2] or self.allowResizing then
+        self:handleResizing()
+    end
 
     -- Canvas
     local canvasX = hx + Window.borderWidth
@@ -160,6 +164,7 @@ function Window:draw(x,y)
     local cw,ch = self.canvas:getDimensions()
     if cw ~= canvasWidth or ch ~= canvasHeight then
         self.canvas = love.graphics.newCanvas(canvasWidth, canvasHeight)
+        self:onResize()
     end
 
     love.graphics.setCanvas(self.canvas)
@@ -169,6 +174,12 @@ function Window:draw(x,y)
     local mousePosX,mousePosY = love.mouse.getPosition()
     mousePosX = mousePosX - self.pos.x
     mousePosY = mousePosY - self.pos.y - Window.headerHeight
+
+    if self.fullscreen then
+        mousePosX,mousePosY = love.mouse.getPosition()
+        mousePosY = mousePosY - Window.headerHeight
+    end
+
     love.graphics.setColor(1, 1, 1, 1)
     self:canvasDraw(nx_AllDrawableObjects[1] == self,Vector.new(mousePosX,mousePosY))
     love.graphics.setCanvas(canvas)
@@ -316,23 +327,6 @@ function Window:handleResizing()
         local isCorner = false
         if not isWithinBox(mousePos.x,mousePos.y,left,top,width,height) then
             local radiusFromCorner = 16
-            --[[
-            if self.selectedCorner == nil and gSelectedControlButton == nil and gSelectedWindow == nil then
-                for i,pointName in ipairs(pointNames) do
-                    local diff = mousePos - points[i]
-                    local distance = diff:length()
-                    if distance < radiusFromCorner then
-                        self.hoverCorner = pointName
-                        isCorner = true
-                        if gClickedThisFrame then
-                            self.selectedCorner = pointName
-                            break
-                        end
-                    end
-                end
-            end
-            ]]
-
             -- No corners were selected, let's try edges
             if not self.selectedCorner and isWithinBox(mousePos.x,mousePos.y,
                                                         left-radiusFromCorner,

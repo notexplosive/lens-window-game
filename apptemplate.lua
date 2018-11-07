@@ -4,14 +4,14 @@ local AppTemplate = {}
 
 AppTemplate.positions = {}
 
-function AppTemplate.new(name,icon,width,height)
+function AppTemplate.new(name,width,height)
     local self = newObject(AppTemplate)
     self.name = name
-    self.width = width
-    self.height = height
+    self.width = width or 640
+    self.height = height or 480
+    function self.onStart() end
     function self.update(dt) end
     function self.draw() end
-    self.icon = icon
 
     AppTemplate.positions[name] = Vector.new(love.graphics.getDimensions()) / 2 - Vector.new(self.width/2,self.height/2)
 
@@ -24,6 +24,8 @@ function AppTemplate:spawn(args)
     w.canvasUpdate = self.update
     w.icon = self.icon
     w.pos = AppTemplate.positions[self.name]:clone()
+    w.enabledControlButtons = self.enabledControlButtons or {true,true,true}
+    w.allowResizing = self.allowResizing or true
 
     if self.textInput then
         w.textInput = self.textInput
@@ -37,7 +39,10 @@ function AppTemplate:spawn(args)
         w.scroll = self.scroll
     end
 
-    --AppTemplate.positions[self.name] = AppTemplate.positions[self.name] + Vector.new(32,32)
+    if self.onResize then
+        w.onResize = self.onResize
+    end
+
     self:onStart(w,args)
     w:bringToFront()
     return w
