@@ -64,12 +64,12 @@ function drawIcons(state,selected,mp,desktop,self)
         col = col + 1
 
         if self then
-            if x > self.canvas:getWidth() then
+            if x + iconSize + distanceApart + 5 + border > self.canvas:getWidth() then
                 col = 0
                 row = row + 1
             end
         else
-            -- desktop, row and col have swapped behavior
+            -- This is for the desktop, aka: row and col have swapped behavior
             if y + iconSize*3 > love.graphics:getHeight() - Window.menuBarHeight then
                 col = 0
                 row = row + 1

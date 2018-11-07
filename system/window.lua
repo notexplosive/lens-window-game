@@ -365,9 +365,6 @@ function Window:handleResizing()
                 end
             end
         end
-
-        print(self.hoverCorner,self.selectedCorner,isCorner)
-        
         
         -- Corners
         if self.selectedCorner and pointMap[self.selectedCorner] then

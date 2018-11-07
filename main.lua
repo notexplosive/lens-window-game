@@ -133,6 +133,7 @@ function lastDraw()
         mousePointer:setQuad('pointer')
 
         -- Corner dragging code for mouse pointer
+        -- TODO: move this to the mouse pointer behavior
         local topWindow = Window.getTopWindow()
         local edge = nil
         if topWindow then
@@ -145,7 +146,6 @@ function lastDraw()
         end
         if topWindow and edge then
             mousePointer:setQuad('sideways')
-            print(edge)
             if edge == 'top' or edge == 'bottom' then
                 mousePointer:setAngle(math.pi/2)
             end
