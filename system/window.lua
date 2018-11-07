@@ -297,81 +297,145 @@ function Window:handleResizing()
     if topWindow == self then
         local left,top,width,height = self:getBackgroundPositions()
         local right,bottom = left+width,top+height
-        local pointNames = {'topLeft','topRight','bottomLeft','bottomRight'}
+        local pointNames = {'leftop','righttop','leftbottom','rightbottom'}
         local points = {
             Vector.new(left,top),
             Vector.new(right,top),
             Vector.new(left,bottom),
             Vector.new(right,bottom)
         }
-        local pointMap ={
-            topLeft=points[1],
-            topRight=points[2],
-            bottomLeft=points[3],
-            bottomRight=points[4]
+        local pointMap = {
+            lefttop=points[1],
+            righttop=points[2],
+            leftbottom=points[3],
+            rightbottom=points[4]
         }
 
         local mousePos = Vector.new(love.mouse.getPosition())
 
+        local isCorner = false
         if not isWithinBox(mousePos.x,mousePos.y,left,top,width,height) then
-            local radiusFromCorner = 24
-
+            local radiusFromCorner = 16
+            --[[
             if self.selectedCorner == nil and gSelectedControlButton == nil and gSelectedWindow == nil then
                 for i,pointName in ipairs(pointNames) do
                     local diff = mousePos - points[i]
                     local distance = diff:length()
                     if distance < radiusFromCorner then
                         self.hoverCorner = pointName
-                        if love.mouse.isDown(1) then
+                        isCorner = true
+                        if gClickedThisFrame then
                             self.selectedCorner = pointName
                             break
                         end
                     end
                 end
             end
-        end
-        
-        if self.selectedCorner then
-            self:bringToFront()
-            local diff = mousePos - pointMap[self.selectedCorner]
-            if self.selectedCorner == 'bottomRight' then
-                self.width = self.width + diff.x
-                self.height = self.height + diff.y
-            end
+            ]]
 
-            if self.selectedCorner == 'bottomLeft' then
-                self.pos.x = self.pos.x + diff.x
-                self.width = self.width - diff.x
-                self.height = self.height + diff.y
-            end
+            -- No corners were selected, let's try edges
+            if not self.selectedCorner and isWithinBox(mousePos.x,mousePos.y,
+                                                        left-radiusFromCorner,
+                                                        top-radiusFromCorner,
+                                                        width+radiusFromCorner*2,
+                                                        height+radiusFromCorner*2) then
+                self.hoverCorner = ''
+                if math.abs(left - mousePos.x) < radiusFromCorner then
+                    self.hoverCorner = self.hoverCorner .. 'left'
+                end
 
-            if self.selectedCorner == 'topRight' then
-                self.width = self.width + diff.x
-                self.height = self.height - diff.y
-                self.pos.y = self.pos.y + diff.y
-            end
+                if math.abs(right - mousePos.x) < radiusFromCorner then
+                    self.hoverCorner = self.hoverCorner .. 'right'
+                end
 
-            if self.selectedCorner == 'topLeft' then
-                self.width = self.width - diff.x
-                self.pos.x = self.pos.x + diff.x
-                self.height = self.height - diff.y
-                self.pos.y = self.pos.y + diff.y
-            end
+                if math.abs(bottom - mousePos.y) < radiusFromCorner then
+                    self.hoverCorner = self.hoverCorner .. 'bottom'
+                end
 
-            if self.width < self:minimumWidth() then
-                local d = self.width - self:minimumWidth()
-                self.width = self:minimumWidth()
-                if self.selectedCorner == 'bottomLeft' then
-                    self.pos.x = self.pos.x + d
+                if math.abs(top - mousePos.y) < radiusFromCorner then
+                    self.hoverCorner = self.hoverCorner .. 'top'
                 end
                 
-                if self.selectedCorner == 'topLeft' then
-                    self.pos.x = self.pos.x + d
+                if self.hoverCorner ~= '' then
+                    if gClickedThisFrame then
+                        self.selectedCorner = self.hoverCorner
+                    end
+                else
+                    self.hoverCorner = nil
                 end
             end
-    
-            if self.height < 1 then
-                self.height = 1
+        end
+
+        print(self.hoverCorner,self.selectedCorner,isCorner)
+        
+        
+        -- Corners
+        if self.selectedCorner and pointMap[self.selectedCorner] then
+            local diff = mousePos - pointMap[self.selectedCorner]
+            self:bringToFront()
+            if self.selectedCorner == 'rightbottom' then
+                self.width = self.width + diff.x
+                self.height = self.height + diff.y
+            end
+
+            if self.selectedCorner == 'leftbottom' then
+                self.pos.x = self.pos.x + diff.x
+                self.width = self.width - diff.x
+                self.height = self.height + diff.y
+            end
+
+            if self.selectedCorner == 'righttop' then
+                self.width = self.width + diff.x
+                self.height = self.height - diff.y
+                self.pos.y = self.pos.y + diff.y
+            end
+
+            if self.selectedCorner == 'lefttop' then
+                self.width = self.width - diff.x
+                self.pos.x = self.pos.x + diff.x
+                self.height = self.height - diff.y
+                self.pos.y = self.pos.y + diff.y
+            end
+        end
+
+        -- Edges
+        if self.selectedCorner and not pointMap[self.selectedCorner] then
+            local diff = mousePos - pointMap['lefttop']
+            if self.selectedCorner == 'left' then
+                self.width = self.width - diff.x
+                self.pos.x = self.pos.x + diff.x
+            end
+
+            if self.selectedCorner == 'top' then
+                self.pos.y = self.pos.y + diff.y
+                self.height = self.height - diff.y
+            end
+
+            diff = mousePos - pointMap['rightbottom']
+            if self.selectedCorner == 'right' then
+                self.width = self.width + diff.x
+            end
+
+            if self.selectedCorner == 'bottom' then
+                self.height = self.height + diff.y
+            end
+
+        end
+
+        if self.width < self:minimumWidth() then
+            local d = self.width - self:minimumWidth()
+
+            self.width = self:minimumWidth()
+            if self.selectedCorner:match('left') then
+                self.pos.x = self.pos.x + d
+            end
+        end
+
+        if self.height < self:minimumHeight() then
+            local d = self.height - self:minimumHeight()
+            self.height = self:minimumHeight()
+            if self.selectedCorner:match('top') then
+                self.pos.y = self.pos.y + d
             end
         end
     end
@@ -379,6 +443,10 @@ end
 
 function Window:minimumWidth()
     return 32 + Window.controlButtonSize * 3 + Window.OSFont:getWidth(self.title)
+end
+
+function Window:minimumHeight()
+    return 128
 end
 
 function Window:bringNextWindowToFront()

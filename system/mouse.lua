@@ -16,7 +16,7 @@ function love.mousepressed(x, y, button, isTouch)
         gSelectedWindow = nil
         local windows = Window.getAllDraw()
         for i,window in ipairs(windows) do
-            if window:getHover() and window.visible then
+            if window:getHover() and window.visible and mousePointer:getQuad() == 'pointer' then
                 gSelectedWindow = window
                 gSelectedWindow:bringToFront()
                 if window:getHeaderHover() and not window:getHoverControlButtons()  then
@@ -31,7 +31,7 @@ function love.mousepressed(x, y, button, isTouch)
             end
         end
 
-        -- A window was not clicked this click, so deselect current window
+        -- The most recent click did not hit a window, so deselect current window
         if not gSelectedWindow then
             if nx_AllDrawableObjects[1] ~= nx_null then
                 Window.bringToFront(nx_null)
@@ -109,5 +109,8 @@ function love.wheelmoved(x, y)
 end
 
 function isWithinBox(mx,my,x,y,width,height)
-    return mx > x and mx < x + width and my > y and my < y + height
+    return mx > x and
+            mx < x + width and
+            my > y and
+            my < y + height
 end

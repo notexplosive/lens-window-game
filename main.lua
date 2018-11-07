@@ -11,7 +11,7 @@ local Apps = require('apps')
 local Filesystem = require('system/filesystem')
 
 local MousePointer = require('system/mousepointer')
-local mousePointer = MousePointer.new()
+mousePointer = MousePointer.new()
 
 local moonshine = require('moonshine')
 
@@ -129,21 +129,33 @@ function lastDraw()
 
     if State.isLoggedIn then
         mousePointer:setFlip(false)
+        mousePointer:setAngle(0)
         mousePointer:setQuad('pointer')
 
+        -- Corner dragging code for mouse pointer
         local topWindow = Window.getTopWindow()
-        local corner = nil
+        local edge = nil
         if topWindow then
-            corner = topWindow.hoverCorner
-            if not corner then
-                corner = topWindow.selectedCorner
+            if not love.mouse.isDown(1) then
+                edge = topWindow.hoverCorner
+            end
+            if not edge then
+                edge = topWindow.selectedCorner
             end
         end
-        if topWindow and corner then
-            mousePointer:setQuad('diagonal')
-            if corner == 'bottomRight' or corner == 'topLeft' then
-                mousePointer:setFlip(false)
-            else
+        if topWindow and edge then
+            mousePointer:setQuad('sideways')
+            print(edge)
+            if edge == 'top' or edge == 'bottom' then
+                mousePointer:setAngle(math.pi/2)
+            end
+            
+            if edge ~= 'left' and edge ~= 'right' and edge ~= 'bottom' and edge ~= 'top' then
+                mousePointer:setQuad('diagonal')
+            end
+
+            if edge == 'leftbottom' or edge == 'righttop' then
+                -- Flip corner graphic
                 mousePointer:setFlip(true)
             end
         end
