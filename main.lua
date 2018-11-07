@@ -63,6 +63,16 @@ desktopState.dir = 'Desktop'
 
 love.keyboard.setKeyRepeat(true)
 function love.keypressed(key, scancode, isrepeat)
+    if key == 'j' then
+        for i,v in ipairs(Window.getAll()) do
+            v.jumpScare = true
+            v.fullscreen = false
+            --v:killUntil(math.random(30,80) / 60)
+        end
+
+        love.audio.newSource('sounds/typing.ogg','static'):play()
+    end
+
     local selectedWindow = nx_AllDrawableObjects[1]
     if selectedWindow.type == Window then
         selectedWindow:keyPress(key)

@@ -32,6 +32,7 @@ function Window.new(title,width,height)
     self.visible = true
     self.selectedCorner = nil
     self.children = {}
+    self.killTimer = 0
 
     -- Draw function for the windows canvas
     -- not implemented on purpose, as they are to be overwritten
@@ -50,16 +51,26 @@ function Window.new(title,width,height)
 end
 
 function Window:update(dt)
+    if self.killTimer > 0 then
+        self.killTimer = self.killTimer - dt
+    end
+    
+    if self.killTimer < 0 then
+        self:destroy()
+    end
+
     if gSelectedWindow ~= self then
         if self.pos.y < 0 then
             self.pos.y = 0
         end
 
         if self.pos.x < -100 then
+            self.jumpScare = false
             self.pos.x = 0
         end
 
         if self.pos.x + self.width > love.graphics.getWidth() + 100 then
+            self.jumpScare = false
             self.pos.x = love.graphics.getWidth() - self.width
         end
 
@@ -70,6 +81,14 @@ function Window:update(dt)
 
     if self.canvasUpdate then
         self.canvasUpdate(dt)
+    end
+
+    if self.jumpScare then
+        if self.pos.x + self.width/2 > love.graphics.getWidth()/2 then
+            self.pos.x = self.pos.x + 100
+        else
+            self.pos.x = self.pos.x - 100
+        end
     end
 end
 
@@ -495,6 +514,10 @@ function Window.getTopWindow()
     end
 
     return nil
+end
+
+function Window:killUntil(n)
+    self.killTimer = n
 end
 
 return Window

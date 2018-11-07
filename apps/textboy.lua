@@ -80,9 +80,9 @@ function app:textInput(text)
     local fullText = self.state.text
     fullText = fullText .. ' '
     if text ~= ' ' then
-        fullText = calcLineBreaks(self.state.text .. text,self.width,Window.OSFont)
+        --fullText = calcLineBreaks(self.state.text .. text,self.width,Window.OSFont)
     end
-    self.state.text = fullText
+    --self.state.text = fullText
 end
 
 function app:keyPress(key)
