@@ -3,6 +3,7 @@ local Apps = {}
 
 desktopState = {}
 desktopState.content = {}
+desktopState.isDesktop = true
 Apps.names = {}
 
 local files = Filesystem.ls('apps')

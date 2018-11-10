@@ -14,8 +14,6 @@ Explorer.pathFieldHeight = 32
 function Explorer:onStart(window,args)
     if args == nil then
         args = ''
-    else
-        window.pos = nx_AllDrawableObjects[2].pos + Vector.new(20,20)
     end
 
     window.state.dir = args
@@ -29,9 +27,31 @@ function Explorer:draw(selected,mp)
     local w,h = self.canvas:getDimensions()
     love.graphics.rectangle('fill', 1, 1, w-2, h-2)
 
+    -- back button
+    love.graphics.setColor(0.6, 1, 0.6)
+    local bx,by,bw,bh = 4, 4, 32, Explorer.pathFieldHeight
+    love.graphics.rectangle('fill', bx, by, bw, bh)
+
+    if isWithinBox(mp.x,mp.y,bx,by,bw,bh) and gClickedThisFrame then
+        local segments = self.state.dir:split('/')
+        local path = ''
+
+        for i=1,#segments-1 do
+            if segments[i] ~= '' then
+                path = path .. segments[i] .. '/'
+            end
+        end
+        print('HEY',path)
+
+        self.state.dir = path
+        self.state.content = Filesystem.inGameLS(self.state.dir)
+    end
+
+    -- breadcrumb bar
+    love.graphics.setColor(0.8, 0.8, 0.8)
+    love.graphics.rectangle('fill', 32 + 4, 4, w-8 - 32, Explorer.pathFieldHeight)
     love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle('line', 4, 4, w-8, Explorer.pathFieldHeight)
-    love.graphics.print('PC//'..self.state.dir,8,8)
+    love.graphics.print('PC:/'..self.state.dir,32 + 8, 8)
 
     drawIcons(self.state,selected,mp,false,self)
 end
@@ -115,7 +135,24 @@ function drawIcons(state,selected,mp,desktop,self)
                     local oldSelectedIndex = state.selectedIndex
                     state.selectedIndex = i
                     if gDoubleClickedThisFrame and anIconWasClicked and oldSelectedIndex == i then
-                        executeFile(state.dir..'/'..v.name,v)
+                        local filename = state.dir..'/'..v.name
+                        if state.dir == '' then
+                            filename = v.name
+                        end
+
+                        local info = love.filesystem.getInfo('files/'..filename)
+                        
+                        if info and info.type == 'directory' then
+                            if desktop then
+                                executeFile(filename,{dir=filename})
+                            else
+                                state.dir = filename
+                                state.content = Filesystem.inGameLS(state.dir)
+                                state.selectedIndex = nil
+                            end
+                        else
+                            executeFile(filename,v)
+                        end
                     end
                 end
             end

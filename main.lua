@@ -104,7 +104,7 @@ function firstDraw()
     love.graphics.rectangle('fill',0,0,love.graphics.getDimensions())
 
     local mp = Vector.new(love.mouse.getPosition())
-    drawIcons(desktopState,true,mp,true)
+    drawIcons(desktopState, nx_AllDrawableObjects[1].type ~= Window ,mp,true)
 end
 
 local OSLogo = love.graphics.newImage('images/wonders.png')
