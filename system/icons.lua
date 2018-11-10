@@ -1,6 +1,6 @@
 local Icons = {}
 
-Icons.iconNames = {'folder','text','app','textboy','locater','internet','workitems','demon','shell','image'}
+Icons.iconNames = {'folder','text','app','textboy','locater','internet','workitems','demon','shell','image','warning'}
 Icons.image = love.graphics.newImage('images/icons.png')
 Icons.quads = nil
 Icons.font = love.graphics.newFont('fonts/Roboto-Light.woff',math.floor(12))

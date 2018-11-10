@@ -11,7 +11,9 @@ for i,file in ipairs(files) do
     local app = require('apps/' .. filename)
     Apps[filename] = app
     append(Apps.names,filename)
-    append(desktopState.content,{name = app.iconName .. '.exe', app = filename, icon=app.icon})
+    if app.showOnDesktop ~= false then
+        append(desktopState.content,{name = app.iconName .. '.exe', app = filename, icon=app.icon})
+    end
 end
 
 return Apps

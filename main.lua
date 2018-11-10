@@ -54,7 +54,6 @@ love.graphics.setDefaultFilter('nearest', 'nearest')
 local testw = Window.new("test",320,280)
 testw:close()
 
-
 function love.load(arg)
     State:load()
 end

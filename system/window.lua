@@ -31,8 +31,11 @@ function Window.new(title,width,height)
     self.icon = nil
     self.visible = true
     self.selectedCorner = nil
-    self.children = {}
+    self.child = nil
+    self.parent = nil
+
     self.killTimer = 0
+    self.flickerTimer = 0
 
     -- Draw function for the windows canvas
     -- not implemented on purpose, as they are to be overwritten
@@ -54,9 +57,17 @@ function Window:update(dt)
     if self.killTimer > 0 then
         self.killTimer = self.killTimer - dt
     end
+
+    if self.flickerTimer > 0 then
+        self.flickerTimer = self.flickerTimer - dt
+    end
     
     if self.killTimer < 0 then
         self:destroy()
+    end
+
+    if self.child then
+        return
     end
 
     if gSelectedWindow ~= self then
@@ -80,7 +91,7 @@ function Window:update(dt)
     end
 
     if self.canvasUpdate then
-        self.canvasUpdate(dt)
+        self:canvasUpdate(dt)
     end
 
     if self.jumpScare then
@@ -106,6 +117,11 @@ function Window:draw(x,y)
     end
     local hx,hy,hwidth,hheight = self:getHeaderPositions()
     local _,_,wwidth,wheight = self:getBackgroundPositions()
+
+
+    if self.flickerTimer > 0 then
+        dimFactor = dimFactor + math.sin(self.flickerTimer * 60) / 10
+    end
 
     local dimLower = 0.7 * dimFactor
     local brightenUpper = 1.2 * dimFactor
@@ -168,7 +184,7 @@ function Window:draw(x,y)
     end
 
     self.hoverCorner = nil
-    if self.enabledControlButtons[2] or self.allowResizing then
+    if self.allowResizing then
         self:handleResizing()
     end
 
@@ -293,6 +309,12 @@ function Window:bringToFront()
             nx_AllDrawableObjects[i+1] = nx_AllDrawableObjects[i]
         end
         nx_AllDrawableObjects[1] = temp
+    end
+
+    if self.child then
+        love.audio.newSource('sounds/no.ogg', 'static'):play()
+        self.child.flickerTimer = 0.5
+        self.child:bringToFront()
     end
 end
 
@@ -477,11 +499,18 @@ function Window:bringNextWindowToFront()
 end
 
 function Window:close()
-    for i,v in ipairs(self.children) do
-        v:destroy()
+    if self.child then
+        self.child:close()
+    end
+
+    if self.parent then
+        self.parent.child = nil
     end
 
     self:bringNextWindowToFront()
+    if self.onClose then
+        self:onClose()
+    end
     self:destroy()
 end
 
@@ -518,6 +547,12 @@ end
 
 function Window:killUntil(n)
     self.killTimer = n
+end
+
+function Window:spawnChild(appName,args)
+    self.child = LaunchApp(appName,args)
+    self.child.parent = self
+    return self.child
 end
 
 return Window

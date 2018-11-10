@@ -9,13 +9,13 @@ app.icon = 'locater'
 app.iconName = 'Locater'
 
 local Explorer = app
+Explorer.pathFieldHeight = 32
 
 function Explorer:onStart(window,args)
     if args == nil then
         args = ''
     else
         window.pos = nx_AllDrawableObjects[2].pos + Vector.new(20,20)
-        window.title = window.title .. ' - ' .. args
     end
 
     window.state.dir = args
@@ -28,6 +28,10 @@ function Explorer:draw(selected,mp)
     love.graphics.setColor(1,1,1,1)
     local w,h = self.canvas:getDimensions()
     love.graphics.rectangle('fill', 1, 1, w-2, h-2)
+
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle('line', 4, 4, w-8, Explorer.pathFieldHeight)
+    love.graphics.print('PC//'..self.state.dir,8,8)
 
     drawIcons(self.state,selected,mp,false,self)
 end
@@ -42,6 +46,7 @@ function Explorer:keyPress(key,isDesktop)
 end
 
 function drawIcons(state,selected,mp,desktop,self)
+    love.graphics.setColor(1,1,1,1)
     local oldFont = love.graphics.getFont()
     love.graphics.setFont(Icons.font)
     
@@ -53,10 +58,9 @@ function drawIcons(state,selected,mp,desktop,self)
     for i,v in ipairs(state.content) do
         local image,quad = Icons.getQuad(v.icon)
         love.graphics.setColor(1,1,1,1)
-        local x,y = border + 5 + (i-1)*distanceApart,border
 
         local x = border + 5 + col*distanceApart
-        local y = border + row * (iconSize+distanceApart)
+        local y = border + row * (iconSize+distanceApart) + Explorer.pathFieldHeight
         
         if desktop then
             x = border + 5 + row*(distanceApart + 10)

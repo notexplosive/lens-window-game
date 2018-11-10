@@ -56,7 +56,7 @@ function love.mousereleased(x, y, button, isTouch)
 
         local windows = Window.getAllDraw()
         for i,window in ipairs(windows) do
-            if window:getHover() and window.visible then
+            if window:getHover() and window.visible and not window.child then
                 local controlButton = window:getHoverControlButtons()
                 if controlButton == gSelectedControlButton then
                     if controlButton == 1 then
@@ -83,7 +83,7 @@ function love.mousemoved(x, y, dx, dy)
     local pos = Vector.new(x,y)
     local vel = Vector.new(dx,dy)
     if love.mouse.isDown(1) then
-        if gSelectedWindow ~= nil and gDragging then
+        if gSelectedWindow ~= nil and not gSelectedWindow.child and gDragging then
             gSelectedWindow.pos = gSelectedWindow.pos + vel
 
             if gSelectedWindow.fullscreen and dy > 1 then

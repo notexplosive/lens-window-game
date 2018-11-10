@@ -11,6 +11,7 @@ app.iconName = 'Textboy'
 
 -- window == self??
 function app:onStart(window,args)
+    window.storedText = nil
     window.state.maxscrolly = 0
     if args ~= nil then
         local filename = args:split('/')[#args:split('/')]
@@ -36,9 +37,14 @@ function app:onStart(window,args)
 end
 
 function reloadText(self)
+    if self.storedText then
+        return unpack(self.storedText)
+    end
+    
     if self.state.path then
         local temp = love.filesystem.read(self.state.path)
         text,count = calcLineBreaks(temp, self.width,Window.OSFont)
+        self.storedText = {text,count}
         return text,count
     end
 end

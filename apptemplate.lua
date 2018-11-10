@@ -24,26 +24,29 @@ function AppTemplate:spawn(args)
     w.canvasUpdate = self.update
     w.icon = self.icon
     w.pos = AppTemplate.positions[self.name]:clone()
-    w.enabledControlButtons = self.enabledControlButtons or {true,true,true}
-    w.allowResizing = self.allowResizing or true
+    w.enabledControlButtons = {true,true,true}
 
-    if self.textInput then
-        w.textInput = self.textInput
+    local injectedPropertiesAndMethods = {
+        -- Methods
+        'textInput',
+        'keyPress',
+        'scroll',
+        'onResize',
+        'onClose',
+        'onStart',
+
+        -- Properties
+        'allowResizing',
+        'enabledControlButtons'
+    }
+
+    for i,prop in ipairs(injectedPropertiesAndMethods) do
+        if self[prop] ~= nil then
+            w[prop] = self[prop]
+        end
     end
 
-    if self.keyPress then
-        w.keyPress = self.keyPress
-    end
-
-    if self.scroll then
-        w.scroll = self.scroll
-    end
-
-    if self.onResize then
-        w.onResize = self.onResize
-    end
-
-    self:onStart(w,args)
+    w:onStart(w,args)
     w:bringToFront()
     return w
 end
