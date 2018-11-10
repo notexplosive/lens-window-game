@@ -8,11 +8,11 @@ local Filesystem = require('system/filesystem')
 local app = AppTemplate.new('TextBoy',400,500)
 app.icon = 'textboy'
 app.iconName = 'Textboy'
+app.behavior = {}
 
 -- window == self??
 function app:onStart(window,args)
-    window.storedText = nil
-    window.state.maxscrolly = 0
+    window.state.storedText = nil
     if args ~= nil then
         local filename = args:split('/')[#args:split('/')]
         window.title = window.title .. ' - ' .. filename
@@ -25,28 +25,29 @@ function app:onStart(window,args)
 
         local temp = love.filesystem.read('files/'..args)
         window.state.path = 'files/'..args
-        local text,count = reloadText(window)
-        window.state.maxscrolly = -count * Window.OSFont:getHeight()
+        local text = app.behavior.reloadText(window)
         window.state.text = text
     else
         window.state.text = ''
     end
 
-    window.state.scrolly = 0
     window.state.frame = 0
 end
 
-function reloadText(self)
-    if self.storedText then
-        return unpack(self.storedText)
+function app.behavior.reloadText(self)
+    if self.state.storedText then
+        return self.state.storedText
     end
     
     if self.state.path then
         local temp = love.filesystem.read(self.state.path)
-        text,count = calcLineBreaks(temp, self.width,Window.OSFont)
-        self.storedText = {text,count}
-        return text,count
+        self.state.text = calcLineBreaks(temp, self.width,Window.OSFont)
+        self.state.storedText = self.state.text
+        self.behavior.recalcBottomContentY(self)
+        return self.state.text
     end
+
+    return ''
 end
 
 function app:draw(selected)
@@ -61,24 +62,19 @@ function app:draw(selected)
         text = text .. '|'
     end
     
-    love.graphics.print(text,2,2 + self.state.scrolly)
-
-    love.graphics.setColor(0,0,0)
-    local ll = self.canvas:getHeight() * self.state.scrolly / (self.state.maxscrolly )
-    if ll + gScrollIncrement > self.canvas:getHeight() then
-        --ll = - gScrollIncrement
-    end
-    love.graphics.rectangle('line', self.canvas:getWidth() - 10, ll, 10, gScrollIncrement)
+    love.graphics.print(text,2,2 + self.scrollY)
 end
 
 function app:scroll(dy)
-    self.state.scrolly = self.state.scrolly + dy * gScrollIncrement
-    if self.state.scrolly > 0 then
-        self.state.scrolly = 0
-    end
+    if -self.bottomContentY > self.canvas:getHeight() then
+        self.scrollY = self.scrollY + dy * gScrollIncrement
+        if self.scrollY > 0 then
+            self.scrollY = 0
+        end
 
-    if self.state.scrolly < self.state.maxscrolly then
-        self.state.scrolly = self.state.maxscrolly
+        if self.scrollY < self.bottomContentY + self.canvas:getHeight() then
+            self.scrollY = self.bottomContentY + self.canvas:getHeight()
+        end
     end
 end
 
@@ -86,9 +82,8 @@ function app:textInput(text)
     local fullText = self.state.text
     fullText = fullText .. ' '
     if text ~= ' ' then
-        --fullText = calcLineBreaks(self.state.text .. text,self.width,Window.OSFont)
+
     end
-    --self.state.text = fullText
 end
 
 function app:keyPress(key)
@@ -103,7 +98,14 @@ function app:keyPress(key)
 end
 
 function app:onResize()
-    self.state.text = calcLineBreaks(reloadText(self),self.width,Window.OSFont)
+    self.state.text = calcLineBreaks(app.behavior.reloadText(self),self.width,Window.OSFont)
+    self.behavior.recalcBottomContentY(self)
+end
+
+function app.behavior.recalcBottomContentY(self)
+    local _,count = self.state.text:gsub('\n','\n')
+    count = count + 1
+    self.bottomContentY = -count * Window.OSFont:getHeight()
 end
 
 return app

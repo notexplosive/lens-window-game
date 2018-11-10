@@ -28,6 +28,7 @@ function AppTemplate:spawn(args)
 
     local injectedPropertiesAndMethods = {
         -- Methods
+        'behavior',
         'textInput',
         'keyPress',
         'scroll',

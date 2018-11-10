@@ -6,6 +6,7 @@ Written by nxplv
 Graphics by nxplv
 
 Written in LÖVE2D
+Moonshine Shaders by vrld
 
 Fonts:
 ChevyRay - SoftSquare, Vector Mono

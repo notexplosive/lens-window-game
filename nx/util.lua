@@ -126,7 +126,6 @@ end
 -- Calculate linebreaks on given font
 function calcLineBreaks(input,width,font)
     local text = ''
-    local count = 0
     for i,word in ipairs( input:split(' ') ) do
         if font:getWidth(text .. word .. ' ') + 10 > width then
             -- Make sure it's actually worth linebreaking, if the line is still going, we should wrap instead
@@ -136,8 +135,6 @@ function calcLineBreaks(input,width,font)
                 local wordWithoutLastChar = word:sub(1,word:len()-1)
                 text = wordWithoutLastChar .. '\n' .. word:charAt(word:len())
             end
-
-            count = count + 1
         else
             if text == '' then
                 text = word
@@ -146,5 +143,6 @@ function calcLineBreaks(input,width,font)
             end
         end
     end
-    return text,count
+
+    return text
 end

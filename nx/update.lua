@@ -20,6 +20,7 @@ end
 function love.draw()
     effect = moonshine(moonshine.effects.scanlines)
     effect.scanlines.opacity = 0.1
+    effect.scanlines.frequency = 400
     --effect(function()
         if firstDraw then firstDraw() end
 

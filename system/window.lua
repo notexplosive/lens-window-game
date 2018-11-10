@@ -33,6 +33,8 @@ function Window.new(title,width,height)
     self.selectedCorner = nil
     self.child = nil
     self.parent = nil
+    self.bottomContentY = 0
+    self.scrollY = 0
 
     self.killTimer = 0
     self.flickerTimer = 0
@@ -202,6 +204,7 @@ function Window:draw(x,y)
     local cw,ch = self.canvas:getDimensions()
     if cw ~= canvasWidth or ch ~= canvasHeight then
         self.canvas = love.graphics.newCanvas(canvasWidth, canvasHeight)
+        self:bringToFront()
         self:onResize()
     end
 
