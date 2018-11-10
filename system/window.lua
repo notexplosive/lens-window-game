@@ -63,6 +63,9 @@ function Window:update(dt)
     end
     
     if self.killTimer < 0 then
+        local snd = love.audio.newSource('sounds/no.ogg', 'static')
+        snd:setPitch(0.5 + love.math.random(-50,50) / 100)
+        snd:play()
         self:destroy()
     end
 

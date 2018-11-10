@@ -66,10 +66,12 @@ function love.keypressed(key, scancode, isrepeat)
         for i,v in ipairs(Window.getAll()) do
             v.jumpScare = true
             v.fullscreen = false
-            --v:killUntil(math.random(30,80) / 60)
+            v:killUntil(math.random(30,80) / 60)
         end
 
-        love.audio.newSource('sounds/typing.ogg','static'):play()
+        local snd = love.audio.newSource('sounds/no2.ogg','static')
+        snd:setPitch(0.4)
+        snd:play()
     end
 
     local selectedWindow = nx_AllDrawableObjects[1]
