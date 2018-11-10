@@ -30,7 +30,10 @@ function Explorer:draw(selected,mp)
     -- back button
     love.graphics.setColor(0.6, 1, 0.6)
     local bx,by,bw,bh = 4, 4, 32, Explorer.pathFieldHeight
-    love.graphics.rectangle('fill', bx, by, bw, bh)
+    local img,quad = Icons.getQuad('back')
+    love.graphics.setColor(1,1,1)
+    love.graphics.draw(img,quad,bx,by)
+    --love.graphics.rectangle('fill', bx, by, bw, bh)
 
     if isWithinBox(mp.x,mp.y,bx,by,bw,bh) and gClickedThisFrame then
         local segments = self.state.dir:split('/')
@@ -41,7 +44,6 @@ function Explorer:draw(selected,mp)
                 path = path .. segments[i] .. '/'
             end
         end
-        print('HEY',path)
 
         self.state.dir = path
         self.state.content = Filesystem.inGameLS(self.state.dir)
