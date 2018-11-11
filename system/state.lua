@@ -28,6 +28,10 @@ end
 function State:persist(flagName,bool)
     self:set(flagName,bool)
 
+    if bool == nil then
+        bool = true
+    end
+
     _saveToDisk(flagName,bool)
 end
 

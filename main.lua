@@ -9,6 +9,8 @@ local MenuBar = require('system/menubar')
 local Filesystem = require('system/filesystem')
 local State = require('system/state')
 local Apps = require('apps')
+local Timer = require('system/timer')
+local UI = require('system/ui')
 
 local MousePointer = require('system/mousepointer')
 mousePointer = MousePointer.new()
@@ -56,6 +58,10 @@ testw:close()
 
 function love.load(arg)
     State:load()
+    if not State:get('isLoggedIn') then
+        Timer.new(1.5,playLoginSound)
+        Timer.new(3,logIn)
+    end
 end
 
 desktopState.dir = 'Desktop'
@@ -72,7 +78,6 @@ function jumpScare()
     snd:setPitch(0.4)
     snd:play()
 
-    
     State:persist('hasSeenJumpScare')
 end
 
@@ -115,14 +120,8 @@ end
 local OSLogo = love.graphics.newImage('images/wonders.png')
 
 function lastDraw()
-    --love.graphics.draw(cursorImage,mx-16,my-16)
-    menuBar:draw(0,love.graphics.getHeight() - Window.menuBarHeight)
-
     if State.isLoggedIn then
-        mousePointer:setFlip(false)
-        mousePointer:setAngle(0)
-        mousePointer:setQuad('pointer')
-
+        menuBar:draw(0,love.graphics.getHeight() - Window.menuBarHeight)
         -- Corner dragging code for mouse pointer
         -- TODO: move this to the mouse pointer behavior
         local topWindow = Window.getTopWindow()
@@ -150,7 +149,6 @@ function lastDraw()
                 mousePointer:setFlip(true)
             end
         end
-        mousePointer:draw()
     else
         love.graphics.setColor(0.5,0.5,0.8)
         love.graphics.rectangle('fill', 0, 0, love.graphics.getDimensions())
@@ -164,7 +162,14 @@ function lastDraw()
         love.graphics.print("Wonders nX",love.graphics.getWidth()/2+10,love.graphics.getHeight()/2 - 64)
         love.graphics.setFont(sideKickFont)
         love.graphics.print("Macrolabs Corporation",love.graphics.getWidth()/2+10,love.graphics.getHeight()/2)
+
+        UI.button.new('Hello',200,200)
     end
+
+    mousePointer:setFlip(false)
+    mousePointer:setAngle(0)
+    mousePointer:setQuad('pointer')
+    mousePointer:draw()
 
     gClickedThisFrame = false
     gDoubleClickedThisFrame = false
@@ -172,22 +177,18 @@ end
 
 local doubleClickTimer = 0
 local loginTimer = 0
+
+function logIn()
+    State:persist('isLoggedIn')
+end
+
+function playLoginSound()
+    love.audio.newSource('sounds/login.ogg', 'static'):play()
+end
+
 function lastUpdate(dt)
     menuBar:update(dt)
     doubleClickTimer = doubleClickTimer - dt
-
-    if not State.isLoggedIn then
-        loginTimer = loginTimer + dt
-        
-        if loginTimer > 1.5 and not State.loginSoundPlayed then
-            love.audio.newSource('sounds/login.ogg', 'static'):play()
-            State.loginSoundPlayed = true
-        end
-
-        if loginTimer > 3 then
-            State.isLoggedIn = true
-        end
-    end
 
     if gClickedThisFrame then
         if doubleClickTimer > 0 then

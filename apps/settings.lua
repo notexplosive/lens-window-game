@@ -14,6 +14,7 @@ app.enabledControlButtons = {true,false,true}
 app.allowResizing = false
 
 function logOut()
+    State:set('loggingOff',false)
     State:set('isLoggedIn',false)
 end
 
@@ -26,9 +27,12 @@ end
 function app:onStart(window,args)
     self.buttons = {
         UI.button.new('Log Off',200,200, function()
-            love.audio.newSource('sounds/shutdown.ogg', 'static'):play()
-            Timer.new(2,closeAllWindows)
-            Timer.new(3,logOut)
+            if not State:get('loggingOff') then
+                State:set('loggingOff')
+                love.audio.newSource('sounds/shutdown.ogg', 'static'):play()
+                Timer.new(2,closeAllWindows)
+                Timer.new(3,logOut)
+            end
         end),
         UI.button.new('Log Off 2',200,232)
     }

@@ -38,9 +38,13 @@ function Browser:update(dt)
                 jumpScare()
             end
             function popup:onClose()
-                if self.parent and not State:get('hasSeenJumpScare') then
-                    self.parent.state.spawnTimer = 0.5
-                    self.parent.state.childCounter = self.parent.state.childCounter + 1
+                if self.parent then
+                    if not State:get('hasSeenJumpScare') then
+                        self.parent.state.spawnTimer = 0.5
+                        self.parent.state.childCounter = self.parent.state.childCounter + 1
+                    else
+                        self.parent:close()
+                    end
                 end
             end
         end
