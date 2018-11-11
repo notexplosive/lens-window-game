@@ -1,6 +1,8 @@
 local Vector = require('nx/Vector')
 local ButtonBase = {}
 
+ButtonBase.font = love.graphics.newFont('fonts/Roboto-Light.woff',14)
+
 -- buttonbase Class
 function ButtonBase.new(x,y,onClick)
     local self = newObject(ButtonBase)

@@ -1,0 +1,3 @@
+When you close a door, a window opens
+
+The window then prompts you to reopen the door

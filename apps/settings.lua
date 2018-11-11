@@ -25,8 +25,10 @@ function closeAllWindows()
 end
 
 function app:onStart(window,args)
+    local leftSide = 16
+    local topSide = 64
     self.buttons = {
-        UI.button.new('Log Off',200,200, function()
+        UI.button.new('Log Off',leftSide,topSide, function()
             if not State:get('loggingOff') then
                 State:set('loggingOff')
                 love.audio.newSource('sounds/shutdown.ogg', 'static'):play()
@@ -34,13 +36,15 @@ function app:onStart(window,args)
                 Timer.new(3,logOut)
             end
         end),
-        UI.button.new('Log Off 2',200,232)
+        UI.button.new('Another button',leftSide,topSide + 32),
+        UI.checkbox.new('myCoolCheckbox',leftSide,topSide + 64,'myCoolFlag'),
+        UI.checkbox.new('Scanline shader',leftSide,topSide + 64 + 24,'shaderEnabled',true),
     }
 end
 
 function app:draw(selected,mp)
     love.graphics.setColor(0,0,0,1)
-    love.graphics.print('General Settings',20,20)
+    love.graphics.print('General Settings',16,20)
 
     for i,button in ipairs(self.buttons) do
         -- This won't work with scrolling I don't think

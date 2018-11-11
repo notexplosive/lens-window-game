@@ -3,13 +3,14 @@ local ButtonBase = require('system/ui/buttonbase')
 
 local Button = {}
 
--- Button Base Class
 function Button.new(label,x,y,onClick)
     local self = ButtonBase.new(x,y,onClick)
     self.update = Button.update
     self.draw = Button.draw
     self.preOnClick = Button.preOnClick
     self.label = label
+    self.width = 128
+    self.height = 24
     return self
 end
 
@@ -28,9 +29,10 @@ function Button:draw(x,y,mp)
     love.graphics.setColor(0,0,0)
     local textX = x + 3
     local textY = y + 3
-    local font = love.graphics.getFont()
+    local font = ButtonBase.font
+    love.graphics.setFont(font)
     if self.justify == 'center' then
-        textX = x + self.width/2 - font:getWidth(self.label)/2
+        textX = math.floor(x + self.width/2 - font:getWidth(self.label)/2)
     end
     love.graphics.print(self.label,textX,textY)
 end
