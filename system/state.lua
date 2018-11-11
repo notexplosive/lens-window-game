@@ -11,13 +11,22 @@ function State:load()
     end
 end
 
--- Sets a flag and then writes it to disk
-function State:persist(flagName,bool)
+-- Sets a flag, does not write it to disk
+function State:set(flagName,bool)
     if bool == nil then
         bool = true
     end
 
     self[flagName] = bool
+end
+
+function State:get(flagName)
+    return self[flagName]
+end
+
+-- Sets a flag and then writes it to disk
+function State:persist(flagName,bool)
+    self:set(flagName,bool)
 
     _saveToDisk(flagName,bool)
 end

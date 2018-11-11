@@ -210,7 +210,7 @@ function Window:draw(x,y)
 
     love.graphics.setCanvas(self.canvas)
     love.graphics.setBlendMode("alpha")
-    love.graphics.setColor(0.6,0.6,0.6,1)
+    love.graphics.setColor(0.9,0.9,0.8,1)
     love.graphics.rectangle('fill', 0, 0, love.graphics.getDimensions())
     local mousePosX,mousePosY = love.mouse.getPosition()
     mousePosX = mousePosX - self.pos.x

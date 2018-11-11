@@ -1,6 +1,6 @@
 local Icons = {}
 
-Icons.iconNames = {'folder','text','app','textboy','locater','internet','workitems','demon','shell','image','warning'}
+Icons.iconNames = {'folder','text','app','textboy','locater','internet','workitems','demon','shell','image','warning','settings'}
 Icons.uiNames = {'back'}
 Icons.image = love.graphics.newImage('images/icons.png')
 Icons.uiImage = love.graphics.newImage('images/ui.png')
