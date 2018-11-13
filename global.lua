@@ -11,6 +11,7 @@ love.graphics.setDefaultFilter('nearest', 'nearest')
 love.keyboard.setKeyRepeat(true)
 
 function executeFile(filename,data)
+    print('DATA',data.name)
     local splitOnDot = filename:split('.')
     local format = splitOnDot[#splitOnDot]
 

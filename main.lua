@@ -9,11 +9,13 @@ local Filesystem = require('system/filesystem')
 local State = require('system/state')
 local Timer = require('system/timer')
 local UI = require('system/ui')
-local LoginScreen = require('system/loginscreen')
 local MousePointer = require('system/mousepointer')
+local LoginScreen = require('system/loginscreen')
+local Desktop = require('system/desktop')
 
 mousePointer = MousePointer.new()
 local menuBar = MenuBar.new()
+local desktop = Desktop.new()
 
 local heroFont = love.graphics.newFont('fonts/Roboto.woff',64)
 local sideKickFont = love.graphics.newFont('fonts/Roboto.woff',32)
@@ -30,22 +32,8 @@ function love.load(arg)
     end
 end
 
-desktopState.dir = 'Desktop'
-
-
--- Initialize desktop
--- TODO: create a "FakeFile" system so we can add files to the virtual pc that aren't actually in the real world filesystem
-local content = Filesystem.inGameLS('Desktop')
-for i,v in ipairs(content) do
-    append(desktopState.content,v)
-end
-
 function firstDraw()
-    love.graphics.setColor(0.2, 0.6, 0.6)
-    love.graphics.rectangle('fill',0,0,love.graphics.getDimensions())
-
-    local mp = Vector.new(love.mouse.getPosition())
-    drawIcons(desktopState, nx_AllDrawableObjects[1].type ~= Window ,mp,true)
+    desktop:draw()
 end
 
 function lastDraw()
