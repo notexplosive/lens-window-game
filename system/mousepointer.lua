@@ -1,3 +1,4 @@
+local Window = require('system/window')
 local MousePointer = {}
 local cursorImages = love.graphics.newImage('images/cursor.png')
 
@@ -19,11 +20,40 @@ function MousePointer:draw(x,y)
     love.graphics.setColor(1,1,1,1)
     local mx,my = love.mouse.getPosition()
     local sx = 1
+    self:update()
     if self.flip then
         sx = -1
     end
 
     love.graphics.draw(cursorImages,self.quads[self.currentQuad],mx,my,self.angle,sx,1,16,16)
+end
+
+function MousePointer:update()
+    local topWindow = Window.getTopWindow()
+    local edge = nil
+    if topWindow then
+        if not love.mouse.isDown(1) then
+            edge = topWindow.hoverCorner
+        end
+        if not edge then
+            edge = topWindow.selectedCorner
+        end
+    end
+    if topWindow and edge then
+        self:setQuad('sideways')
+        if edge == 'top' or edge == 'bottom' then
+            self:setAngle(math.pi/2)
+        end
+        
+        if edge ~= 'left' and edge ~= 'right' and edge ~= 'bottom' and edge ~= 'top' then
+            self:setQuad('diagonal')
+        end
+
+        if edge == 'leftbottom' or edge == 'righttop' then
+            -- Flip corner graphic
+            self:setFlip(true)
+        end
+    end
 end
 
 function MousePointer:setQuad(name)

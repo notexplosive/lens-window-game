@@ -3,38 +3,34 @@ local Window = require('system/window')
 local State = require('system/state')
 
 function love.mousepressed(x, y, button, isTouch)
-    if not State.isLoggedIn then
-        return 
-    end
-
-    gSelectedControlButton = nil
-
     love.audio.newSource('sounds/mousedown.ogg', 'static'):play()
-
     if button == 1 then
+        gSelectedControlButton = nil
         gClickedThisFrame = true
-        gSelectedWindow = nil
-        local windows = Window.getAllDraw()
-        for i,window in ipairs(windows) do
-            if window:getHover() and window.visible and mousePointer:getQuad() == 'pointer' then
-                gSelectedWindow = window
-                gSelectedWindow:bringToFront()
-                if window:getHeaderHover() and not window:getHoverControlButtons()  then
-                    gDragging = true
-                end
+        if State.isLoggedIn then
+            gSelectedWindow = nil
+            local windows = Window.getAllDraw()
+            for i,window in ipairs(windows) do
+                if window:getHover() and window.visible and mousePointer:getQuad() == 'pointer' then
+                    gSelectedWindow = window
+                    gSelectedWindow:bringToFront()
+                    if window:getHeaderHover() and not window:getHoverControlButtons()  then
+                        gDragging = true
+                    end
 
-                local controlButton = window:getHoverControlButtons()
-                if controlButton then
-                    gSelectedControlButton = controlButton
+                    local controlButton = window:getHoverControlButtons()
+                    if controlButton then
+                        gSelectedControlButton = controlButton
+                    end
+                    break
                 end
-                break
             end
-        end
 
-        -- The most recent click did not hit a window, so deselect current window
-        if not gSelectedWindow then
-            if nx_AllDrawableObjects[1] ~= nx_null then
-                Window.bringToFront(nx_null)
+            -- The most recent click did not hit a window, so deselect current window
+            if not gSelectedWindow then
+                if nx_AllDrawableObjects[1] ~= nx_null then
+                    Window.bringToFront(nx_null)
+                end
             end
         end
     end
@@ -42,10 +38,6 @@ end
 
 
 function love.mousereleased(x, y, button, isTouch)
-    if not State.isLoggedIn then
-        return 
-    end
-    
     local snd = love.audio.newSource('sounds/mousedown.ogg', 'static')
     snd:setPitch(0.9)
     snd:play()
@@ -54,28 +46,30 @@ function love.mousereleased(x, y, button, isTouch)
         gDragging = false
         gSelectedWindow = nil
 
-        local windows = Window.getAllDraw()
-        for i,window in ipairs(windows) do
-            if window:getHover() and window.visible and not window.child then
-                local controlButton = window:getHoverControlButtons()
-                if controlButton == gSelectedControlButton then
-                    if controlButton == 1 then
-                        window:close()
-                    end
+        if State.isLoggedIn then
+            local windows = Window.getAllDraw()
+            for i,window in ipairs(windows) do
+                if window:getHover() and window.visible and not window.child then
+                    local controlButton = window:getHoverControlButtons()
+                    if controlButton == gSelectedControlButton then
+                        if controlButton == 1 then
+                            window:close()
+                        end
 
-                    if controlButton == 2 then
-                        window:setFullscreen(not window.fullscreen)
-                    end
+                        if controlButton == 2 then
+                            window:setFullscreen(not window.fullscreen)
+                        end
 
-                    if controlButton == 3 then
-                        window:minimize()
+                        if controlButton == 3 then
+                            window:minimize()
+                        end
                     end
+                    break
                 end
-                break
             end
+            
+            gSelectedControlButton = nil
         end
-        
-        gSelectedControlButton = nil
     end
 end
 

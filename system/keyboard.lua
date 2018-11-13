@@ -5,7 +5,6 @@ function love.keypressed(key, scancode, isrepeat)
     local selectedWindow = nx_AllDrawableObjects[1]
     if selectedWindow.type == Window then
         if key == 'escape' then
-            print('ESC')
             selectedWindow:close()
         else
             selectedWindow:keyPress(key)

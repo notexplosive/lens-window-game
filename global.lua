@@ -4,14 +4,15 @@ require('nx/update')
 local Apps = require('apps')
 local Window = require('system/window')
 
-gScrollIncrement = Window.OSFont:getHeight() * 5 -- is this even used anywhere?
+gScrollIncrement = Window.OSFont:getHeight() * 5
+gClickedThisFrame = false
+gDoubleClickedThisFrame = false
 love.audio.setVolume(0.5)
 love.mouse.setVisible(false)
 love.graphics.setDefaultFilter('nearest', 'nearest')
 love.keyboard.setKeyRepeat(true)
 
 function executeFile(filename,data)
-    print('DATA',data.name)
     local splitOnDot = filename:split('.')
     local format = splitOnDot[#splitOnDot]
 
@@ -33,7 +34,6 @@ function executeFile(filename,data)
 end
 
 function LaunchApp(appName,args)
-    print(appName,args)
     return Apps[appName]:spawn(args)
 end
 

@@ -6,6 +6,7 @@ local Filesystem = require('system/filesystem')
 local Timer = require('system/timer')
 local State = require('system/state')
 local UI = require('system/ui')
+local LoginScreen = require('system/loginscreen')
 
 local app = AppTemplate.new('Settings',440,480)
 app.icon = 'settings'
@@ -34,6 +35,7 @@ function app:onStart(window,args)
                 love.audio.newSource('sounds/shutdown.ogg', 'static'):play()
                 Timer.new(2,closeAllWindows)
                 Timer.new(3,logOut)
+                LoginScreen.loginInProgress = false
             end
         end),
         UI.button.new('Another button',leftSide,topSide + 32),
