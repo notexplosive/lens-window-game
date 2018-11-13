@@ -72,7 +72,7 @@ function drawIcons(state,selected,mp,desktop,self)
     local oldFont = love.graphics.getFont()
     love.graphics.setFont(Icons.font)
     
-    local distanceApart = 64
+    local distanceApart = 64 + 16
     local border = 10
     local iconSize = 32 * 1.5
     local anIconWasClicked = false
