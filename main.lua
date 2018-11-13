@@ -1,57 +1,23 @@
-require('nx/thirdparty')
-require('nx/util')
-require('nx/update')
+require('global')
 require('system/mouse')
+require('system/keyboard')
 
 local Vector = require('nx/vector')
 local Window = require('system/window')
 local MenuBar = require('system/menubar')
 local Filesystem = require('system/filesystem')
 local State = require('system/state')
-local Apps = require('apps')
 local Timer = require('system/timer')
 local UI = require('system/ui')
-
+local LoginScreen = require('system/loginscreen')
 local MousePointer = require('system/mousepointer')
+
 mousePointer = MousePointer.new()
-
-local moonshine = require('moonshine')
-
-gScrollIncrement = Window.OSFont:getHeight() * 5
+local menuBar = MenuBar.new()
 
 local heroFont = love.graphics.newFont('fonts/Roboto.woff',64)
 local sideKickFont = love.graphics.newFont('fonts/Roboto.woff',32)
-
-love.audio.setVolume(0.5)
-
-function executeFile(filename,data)
-    local splitOnDot = filename:split('.')
-    local format = splitOnDot[#splitOnDot]
-
-    if format == 'txt' then
-        LaunchApp('textboy',filename)
-    end
-
-    if format == 'exe' then
-        LaunchApp(data.app)
-    end
-
-    if format == 'll' then
-        LaunchApp('shell',filename)
-    end
-
-    if data.dir then
-        LaunchApp('explorer',data.dir)
-    end
-end
-
-function LaunchApp(appName,args)
-    print(appName,args)
-    return Apps[appName]:spawn(args)
-end
-
-love.mouse.setVisible(false)
-love.graphics.setDefaultFilter('nearest', 'nearest')
+local OSLogo = love.graphics.newImage('images/wonders.png')
 
 local testw = Window.new("test",320,280)
 testw:close()
@@ -66,44 +32,9 @@ end
 
 desktopState.dir = 'Desktop'
 
-love.keyboard.setKeyRepeat(true)
-function jumpScare()
-    for i,v in ipairs(Window.getAll()) do
-        v.jumpScare = true
-        v.fullscreen = false
-        v:killUntil(math.random(30,80) / 60)
-    end
-
-    local snd = love.audio.newSource('sounds/no2.ogg','static')
-    snd:setPitch(0.4)
-    snd:play()
-
-    State:persist('hasSeenJumpScare')
-end
-
-function love.keypressed(key, scancode, isrepeat)
-    local selectedWindow = nx_AllDrawableObjects[1]
-    if selectedWindow.type == Window then
-        selectedWindow:keyPress(key)
-    else
-        Apps.explorer.keyPress({state=desktopState},key,true)
-    end
-
-    if key == 'f4' then
-        os.exit()
-    end
-end
-
-function love.textinput(text)
-    local selectedWindow = nx_AllDrawableObjects[1]
-    if selectedWindow.type == Window then
-        selectedWindow:textInput(text)
-    end
-end
-
-local menuBar = MenuBar.new()
 
 -- Initialize desktop
+-- TODO: create a "FakeFile" system so we can add files to the virtual pc that aren't actually in the real world filesystem
 local content = Filesystem.inGameLS('Desktop')
 for i,v in ipairs(content) do
     append(desktopState.content,v)
@@ -116,8 +47,6 @@ function firstDraw()
     local mp = Vector.new(love.mouse.getPosition())
     drawIcons(desktopState, nx_AllDrawableObjects[1].type ~= Window ,mp,true)
 end
-
-local OSLogo = love.graphics.newImage('images/wonders.png')
 
 function lastDraw()
     if State.isLoggedIn then
@@ -177,14 +106,6 @@ end
 
 local doubleClickTimer = 0
 local loginTimer = 0
-
-function logIn()
-    State:persist('isLoggedIn')
-end
-
-function playLoginSound()
-    love.audio.newSource('sounds/login.ogg', 'static'):play()
-end
 
 function lastUpdate(dt)
     menuBar:update(dt)

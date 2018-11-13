@@ -14,8 +14,11 @@ app.showOnDesktop = false
 local PopUp = app
 
 function PopUp:onStart(window,args)
-    love.audio.newSource('sounds/no2.ogg', 'static'):play()
     window.state.label = 'This is a popup'
+    if args then
+        window.state.label = args
+    end
+    love.audio.newSource('sounds/no2.ogg', 'static'):play()
 end
 
 function PopUp:draw(selected,mp)
