@@ -56,7 +56,7 @@ function Actor:addComponent(componentClass)
     
     append(self.components,component)
 
-    return self
+    return component
 end
 
 function Actor:move(velocity)

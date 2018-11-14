@@ -18,11 +18,6 @@ function Scene:draw(x,y)
     for i,actor in ipairs(self.actors) do
         actor:draw()
     end
-
-    local names = ''
-    for i,v in ipairs(self.actors) do
-        names = names .. '[' .. v.name .. '] '
-    end
 end
 
 -- Add actor to list

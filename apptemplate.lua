@@ -38,7 +38,8 @@ function AppTemplate:spawn(args)
 
         -- Properties
         'allowResizing',
-        'enabledControlButtons'
+        'enabledControlButtons',
+        'scene'
     }
 
     for i,prop in ipairs(injectedPropertiesAndMethods) do
