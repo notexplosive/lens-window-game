@@ -5,7 +5,9 @@ local GameTemplate = {}
 
 function GameTemplate.new(name,width,height)
     local self = AppTemplate.new(name,width,height)
-    self.scene = Scene.new()
+
+    self.enabledControlButtons = {true,false,true}
+
     function self:draw(selected,mp)
         self.scene:draw(0,0)
     end
@@ -13,6 +15,7 @@ function GameTemplate.new(name,width,height)
     function self:update(dt)
         self.scene:update(dt)
     end
+
     return self
 end
 
