@@ -39,7 +39,9 @@ function Desktop:draw()
     love.graphics.rectangle('fill',0,0,love.graphics.getDimensions())
 
     local mp = Vector.new(love.mouse.getPosition())
-    drawIcons(self.state, nx_AllDrawableObjects[1].type ~= Window ,mp,true)
+    if not State.loggingOff then
+        drawIcons(self.state, nx_AllDrawableObjects[1].type ~= Window ,mp,true)
+    end
 end
 
 return Desktop

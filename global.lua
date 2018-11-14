@@ -3,6 +3,7 @@ require('nx/thirdparty')
 require('nx/update')
 local Apps = require('apps')
 local Window = require('system/window')
+local Timer = require('system/timer')
 
 gScrollIncrement = Window.OSFont:getHeight() * 5
 gClickedThisFrame = false
