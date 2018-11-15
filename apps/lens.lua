@@ -21,7 +21,11 @@ function app:update(dt)
 end
 
 function app:draw(selected,mp)
-    love.graphics.setColor(0.5, 0.5, 1)
+    if selected then
+        love.graphics.setColor(0.5, 0.5, 1)
+    else
+        love.graphics.setColor(0.5, 0.5, .7)
+    end
     love.graphics.rectangle('fill',0,0,self.canvas:getDimensions())
 
     local tuples = getAllStarActorsAndWindows()
@@ -37,11 +41,18 @@ function app:draw(selected,mp)
         end
 
         local lensPosition = globalPosition - self.pos
+
+        if tuple.actor.isLensed then
+            love.graphics.setColor(1,1,1,1)
+        else
+            love.graphics.setColor(0.5,0.5,1,1)
+        end
         tuple.actor:draw(lensPosition:components())
         
         local isLensed = isWithinBox(lensPosition.x,lensPosition.y,0,0,self.width,self.height)
         if selected then
             if tuple.actor.isLensed ~= nil and tuple.actor.isLensed ~= isLensed then
+                DEBUG = true
                 if isLensed then
                     if DEBUG then local snd = love.audio.newSource('sounds/no.ogg', 'static') snd:setPitch(2) snd:play() end
                     self.behavior:takeOwnership(tuple.actor,tuple.window)
@@ -61,8 +72,8 @@ function app:draw(selected,mp)
                     end
                 end
             end
+            tuple.actor.isLensed = isLensed
         end
-        tuple.actor.isLensed = isLensed
     end
 end
 

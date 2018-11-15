@@ -9,7 +9,7 @@ local Actor = require('nx/game/actor')
 local PlatformerComponent = require('components/platformer')
 local SpriteRenderer = require('nx/game/components/spriterenderer')
 
-local app = GameTemplate.new('Side Scroller')
+local app = GameTemplate.new('Side Scroller',300,300)
 app.icon = 'shell'
 app.iconName = 'Side Scroller'
 
@@ -20,7 +20,7 @@ function app:onStart(window,args)
     act:addComponent(SpriteRenderer):setSprite(Assets.swordBoy)
     act.spriteRenderer.scale = 2
     act:addComponent(PlatformerComponent)
-    act.pos = Vector.new(250,200)
+    act.pos = Vector.new(150,150)
 
     self.scene:addActor(
         act

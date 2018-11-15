@@ -44,7 +44,6 @@ function PlatformerBehavior:update(dt)
 
         if self.actor.pos.x > self.actor.scene.width then
             self.actor.pos.x = self.actor.scene.width
-            print('rightbound')
         end
     end
 end
