@@ -36,6 +36,17 @@ function PlatformerBehavior:update(dt)
     end
 
     self.actor:move(velocity)
+
+    if self.actor.scene then
+        if self.actor.pos.x < 0 then
+            self.actor.pos.x = 0
+        end
+
+        if self.actor.pos.x > self.actor.scene.width then
+            self.actor.pos.x = self.actor.scene.width
+            print('rightbound')
+        end
+    end
 end
 
 return PlatformerBehavior

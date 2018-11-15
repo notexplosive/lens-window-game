@@ -39,14 +39,14 @@ function app:draw(selected,mp)
         local lensPosition = globalPosition - self.pos
         tuple.actor:draw(lensPosition:components())
         
+        local isLensed = isWithinBox(lensPosition.x,lensPosition.y,0,0,self.width,self.height)
         if selected then
-            local isLensed = isWithinBox(lensPosition.x,lensPosition.y,0,0,self.width,self.height)
             if tuple.actor.isLensed ~= nil and tuple.actor.isLensed ~= isLensed then
                 if isLensed then
-                    local snd = love.audio.newSource('sounds/no.ogg', 'static') snd:setPitch(2) snd:play()
+                    if DEBUG then local snd = love.audio.newSource('sounds/no.ogg', 'static') snd:setPitch(2) snd:play() end
                     self.behavior:takeOwnership(tuple.actor,tuple.window)
                 else
-                    local snd = love.audio.newSource('sounds/no.ogg', 'static') snd:setPitch(2.5) snd:play()
+                    if DEBUG then local snd = love.audio.newSource('sounds/no.ogg', 'static') snd:setPitch(2.5) snd:play() end
                     local windows = Window.getAllInDrawableOrder()
                     local newOwner = nil
                     for j,v in ipairs(windows) do
@@ -61,9 +61,8 @@ function app:draw(selected,mp)
                     end
                 end
             end
-
-            tuple.actor.isLensed = isLensed
         end
+        tuple.actor.isLensed = isLensed
     end
 end
 
@@ -76,7 +75,6 @@ function app.behavior:takeOwnership(actor,oldOwner)
     end
 end
 
-                        ---              TODO:
 function app.behavior:loseOwnership(actor,newOwner)
     if newOwner.scene then
         deleteFromList(self.state.actors,actor)

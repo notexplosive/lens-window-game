@@ -1,10 +1,13 @@
 local Actor = require('nx/game/actor')
 local Scene = {}
 
-function Scene.new()
+function Scene.new(width,height)
     local self = newObject(Scene)
     self.hasStarted = false
     self.actors = {}
+    self.originalActors = {}
+    self.width = width
+    self.height = height
     return self
 end
 
@@ -26,6 +29,11 @@ function Scene:addActor(actor, ...)
     assert(actor.type == Actor,"Can't add a non-actor to a scene")
 
     actor.scene = self
+    if actor.originalScene == nil then
+        actor.originalScene = self
+        append(self.originalActors,actor)
+    end
+
     append(self.actors,actor)
 
     if ... then

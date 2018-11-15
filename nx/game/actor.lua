@@ -7,6 +7,8 @@ function Actor.new(name,star)
     self.name = name
     self.pos = Vector.new()
     self.components = {}
+    self.scene = nil
+    self.originalScene = nil
     self.star = star or false
     return self
 end
@@ -46,6 +48,7 @@ function Actor:removeFromScene()
         for i = index, #self.scene.actors do
             self.scene.actors[i] = self.scene.actors[i+1]
         end
+        self.scene = nil
     end
 end
 
