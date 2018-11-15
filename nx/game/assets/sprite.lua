@@ -4,6 +4,7 @@ function Sprite.new(filename,gridSizeX,gridSizeY)
     local self = newObject(Sprite)
     self.filename = filename
     self.image = love.graphics.newImage(filename)
+    self.image:setFilter('nearest','nearest')
     self.quads = {}
     self.animations = {}
     self.gridWidth = gridSizeX

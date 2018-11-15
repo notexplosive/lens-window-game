@@ -8,9 +8,10 @@ function PlatformerBehavior.create()
 end
 
 function PlatformerBehavior:awake()
-    self.speed = 2
+    self.speed = 4
 end
 
+-- Might use this for debugging
 function PlatformerBehavior:draw()
     
 end

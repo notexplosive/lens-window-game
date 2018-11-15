@@ -34,9 +34,13 @@ function Desktop:update(dt)
 
 end
 
+local bg = love.graphics.newImage('images/bg.png')
 function Desktop:draw()
     love.graphics.setColor(0.2, 0.6, 0.6)
     love.graphics.rectangle('fill',0,0,love.graphics.getDimensions())
+
+    love.graphics.setColor(1,1,1,1)
+    love.graphics.draw(bg)
 
     local mp = Vector.new(love.mouse.getPosition())
     if not State.loggingOff then

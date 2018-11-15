@@ -4,9 +4,9 @@ local Icons = require('system/icons')
 local AppTemplate = require('apptemplate')
 local Filesystem = require('system/filesystem')
 
-local app = AppTemplate.new('File Locater',450,450)
-app.icon = 'locater'
-app.iconName = 'Locater'
+local app = AppTemplate.new('File Locator',450,450)
+app.icon = 'locator'
+app.iconName = 'Locator'
 
 local Explorer = app
 Explorer.pathFieldHeight = 32

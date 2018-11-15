@@ -18,6 +18,7 @@ function app:onStart(window,args)
     local act = Actor.new('Foobar')
 
     act:addComponent(SpriteRenderer):setSprite(Assets.swordBoy)
+    act.spriteRenderer.scale = 2
     act:addComponent(PlatformerComponent)
 
     act.pos = Vector.new(200,200)

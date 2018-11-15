@@ -10,7 +10,6 @@ gClickedThisFrame = false
 gDoubleClickedThisFrame = false
 love.audio.setVolume(0.5)
 love.mouse.setVisible(false)
-love.graphics.setDefaultFilter('nearest', 'nearest')
 love.keyboard.setKeyRepeat(true)
 
 function executeFile(filename,data)
