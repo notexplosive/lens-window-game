@@ -74,13 +74,32 @@ function getDrawIndex(obj)
     return nil
 end
 
--- Generic list utility
+-- Generic list utilities
 function append(table,element)
     table[#table + 1] = element
 end
 
--- Generic utility function
-function isInList(element,table)
+function deleteFromList(table,element)
+    local index = getIndex(table,element)
+    if index then
+        for i = index, #table do
+            table[i] = table[i+1]
+            return table[i]
+        end
+    end
+    return nil
+end
+
+function getIndex(table,element)
+    for i,v in ipairs(table) do
+        if v == element then
+            return i
+        end
+    end
+    return nil
+end
+
+function contains(table,element)
     for i,v in ipairs(table) do
         if v == element then
             return true

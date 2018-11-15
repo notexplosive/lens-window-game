@@ -1,12 +1,13 @@
 local Vector = require('nx/vector')
 local Actor = {}
 
-function Actor.new(name)
+function Actor.new(name,star)
     assert(name ~= nil,"Must provide a name for actor")
     local self = newObject(Actor)
     self.name = name
     self.pos = Vector.new()
     self.components = {}
+    self.star = star or false
     return self
 end
 
@@ -20,10 +21,13 @@ function Actor:sceneUpdate(dt)
 end
 
 -- called by scene
-function Actor:draw()
+function Actor:draw(x,y)
+    if x == nil then
+        x,y = self.pos.x,self.pos.y
+    end
     for i,component in ipairs(self.components) do
         if component.draw then
-            component:draw()
+            component:draw(x,y)
         end
     end
 end
@@ -31,7 +35,11 @@ end
 -- called by scene OR by others
 function Actor:destroy()
     self:onDestroy()
+    self:removeFromScene()
+end
 
+-- called by lens, doesn't technically "destroy" the actor
+function Actor:removeFromScene()
     if self.scene then
         local index = self.scene:getActorIndex(self)
         self.scene.actors[index] = nx_null

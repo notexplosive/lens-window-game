@@ -17,7 +17,7 @@ function SpriteRenderer:awake()
     self.flipY = false
 end
 
-function SpriteRenderer:draw()
+function SpriteRenderer:draw(x,y)
     if self.sprite then
         local quad = self.sprite.quads[1]
         if self.currentAnimation then
@@ -34,8 +34,8 @@ function SpriteRenderer:draw()
 
         love.graphics.draw(self.sprite.image,
             quad,
-            self.actor.pos.x,
-            self.actor.pos.y,
+            x,
+            y,
             self.angle,
             self.scale*xFactor,
             self.scale*yFactor,

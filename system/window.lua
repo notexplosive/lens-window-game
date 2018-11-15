@@ -242,6 +242,16 @@ function Window:getBackgroundPositions()
     return x,y,width,height
 end
 
+function Window.getAllInDrawableOrder()
+    local output = {}
+    for i=1,#nx_AllDrawableObjects do
+        if nx_AllDrawableObjects[i].type == Window then
+            append(output,nx_AllDrawableObjects[i])
+        end
+    end
+    return output
+end
+
 function Window:getHeaderPositions()
     local x,y,width = self:getBackgroundPositions()
 
@@ -464,7 +474,7 @@ function Window:handleResizing()
             local d = self.width - self:minimumWidth()
 
             self.width = self:minimumWidth()
-            if self.selectedCorner:match('left') then
+            if self.selectedCorner and self.selectedCorner:match('left') then
                 self.pos.x = self.pos.x + d
             end
         end
@@ -472,7 +482,7 @@ function Window:handleResizing()
         if self.height < self:minimumHeight() then
             local d = self.height - self:minimumHeight()
             self.height = self:minimumHeight()
-            if self.selectedCorner:match('top') then
+            if self.selectedCorner and self.selectedCorner:match('top') then
                 self.pos.y = self.pos.y + d
             end
         end

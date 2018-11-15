@@ -59,4 +59,8 @@ function Scene:getActorIndex(actor)
     return nil
 end
 
+function Scene:getAllActors()
+    return self.actors
+end
+
 return Scene

@@ -3,7 +3,7 @@ I hope you enjoy it!
 
 Programmed by nxplv
 Written by nxplv
-Graphics by nxplv
+Graphics by nxplv and Medamaudee
 
 Written in LÖVE2D
 Moonshine Shaders by vrld
@@ -22,5 +22,6 @@ freesound.org
     markgia
 
 
-Special Thanks:
+Testing & Feedback:
 Jackelmore
+Wildcarde

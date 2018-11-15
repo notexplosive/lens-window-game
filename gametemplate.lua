@@ -7,8 +7,10 @@ function GameTemplate.new(name,width,height)
     local self = AppTemplate.new(name,width,height)
 
     self.enabledControlButtons = {true,false,true}
+    self.allowResizing = false
 
     function self:draw(selected,mp)
+        love.graphics.setColor(1,1,1,1)
         self.scene:draw(0,0)
     end
 

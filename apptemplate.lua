@@ -9,6 +9,7 @@ function AppTemplate.new(name,width,height)
     self.name = name
     self.width = width or 640
     self.height = height or 480
+    self.behavior = {}
     function self.onStart() end
     function self.update(dt) end
     function self.draw() end
@@ -46,6 +47,10 @@ function AppTemplate:spawn(args)
         if self[prop] ~= nil then
             w[prop] = self[prop]
         end
+    end
+
+    if w.behavior then
+        w.behavior.state = w.state
     end
 
     w:onStart(w,args)

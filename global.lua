@@ -37,6 +37,21 @@ function LaunchApp(appName,args)
     return Apps[appName]:spawn(args)
 end
 
+function getAllStarActorsAndWindows()
+    local tuples = {}
+    local windows = Window.getAll()
+    for i,window in ipairs(windows) do
+        if window.scene then
+            for j,act in ipairs(window.scene:getAllActors()) do
+                if act.star then
+                    append(tuples,{actor=act,window=window})
+                end
+            end
+        end
+    end
+    return tuples
+end
+
 -- EVENTS --
 -- TODO: create an "events" subfolder?
 function jumpScare()
