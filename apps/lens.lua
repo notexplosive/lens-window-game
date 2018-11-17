@@ -9,6 +9,7 @@ app.icon = 'shell'
 app.iconName = 'Lens'
 app.enabledControlButtons = {true,false,false}
 app.allowResizing = false
+app.singleton = true
 
 function app:onStart(window,args)
     self.scene = nil

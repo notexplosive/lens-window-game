@@ -20,12 +20,18 @@ function AppTemplate.new(name,width,height)
 end
 
 function AppTemplate:spawn(args)
+    if self.singleton and Window.getOpen(self) then
+        Window.getOpen(self):bringToFront()
+        return
+    end
+
     local w = Window.new(self.name,self.width,self.height)
     w.canvasDraw = self.draw
     w.canvasUpdate = self.update
     w.icon = self.icon
     w.pos = AppTemplate.positions[self.name]:clone()
     w.enabledControlButtons = {true,true,true}
+    w.associatedApp = self
 
     local injectedPropertiesAndMethods = {
         -- Methods

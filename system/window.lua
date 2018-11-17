@@ -37,6 +37,7 @@ function Window.new(title,width,height)
     self.bottomContentY = 0
     self.scrollY = 0
     self.scene = Scene.new(self.canvas:getDimensions())
+    self.associatedApp = nil
 
     self.killTimer = 0
     self.flickerTimer = 0
@@ -261,6 +262,16 @@ function Window.getAllInDrawableOrder()
         end
     end
     return output
+end
+
+function Window.getOpen(app)
+    local windows = Window.getAll()
+    for i,window in ipairs(windows) do
+        if window.associatedApp == app then
+            return window
+        end
+    end
+    return nil
 end
 
 function Window:getHeaderPositions()
