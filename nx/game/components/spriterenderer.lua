@@ -48,6 +48,9 @@ function SpriteRenderer:update(dt)
     self.currentFrame = self.currentFrame + dt * self.fps
     if self.currentAnimation then
         self.currentFrame = self.currentFrame % self.currentAnimation.last
+        if self.currentAnimation.last == self.currentAnimation.first then
+            self.currentFrame = 0
+        end
     end
 end
 
@@ -66,9 +69,19 @@ function SpriteRenderer:setAnimation(animName)
         return
     end
 
+    love.audio.newSource('sounds/no.ogg', 'static'):play()
+    print(animName)
+
     self.currentAnimation = self.sprite.animations[animName]
     self.currentFrame = 0
     return self
+end
+
+function SpriteRenderer:getAnimation()
+    if self.currentAnimation == nil then
+        return 'nil'
+    end
+    return self.currentAnimation.name
 end
 
 function SpriteRenderer:setFlipX(b)

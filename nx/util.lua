@@ -74,6 +74,19 @@ function getDrawIndex(obj)
     return nil
 end
 
+-- math
+function clamp(num,low,high)
+    if num < low then
+        return low,true,false
+    end
+
+    if num > high then
+        return high,false,true
+    end
+    
+    return num,false,false
+end
+
 -- Generic list utilities
 function append(table,element)
     table[#table + 1] = element

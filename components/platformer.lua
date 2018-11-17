@@ -9,43 +9,69 @@ end
 
 function PlatformerBehavior:awake()
     self.speed = 4
+    self.velocity = Vector.new(0,0)
 end
 
 -- Might use this for debugging
 function PlatformerBehavior:draw()
-    
+    love.graphics.setColor(0,0,0,1)
+    love.graphics.print(self.actor.spriteRenderer:getAnimation())
 end
 
 function PlatformerBehavior:update(dt)
-    local velocity = Vector.new()
+    -- Gravity
+    self.velocity.y = self.velocity.y + 1
+
+    local inputX = 0
     if love.keyboard.isDown('left') then
         self.actor.spriteRenderer:setFlipX(true)
-        velocity.x = velocity.x - 1 * self.speed
+        inputX = inputX - 1 * self.speed
     end
     if love.keyboard.isDown('right') then
         self.actor.spriteRenderer:setFlipX(false)
-        velocity.x = velocity.x + 1 * self.speed
+        inputX = inputX + 1 * self.speed
     end
 
-    if velocity.y == 0 then
-        if math.abs(velocity.x) > 0 then
+    inputX = clamp(inputX,-self.speed,self.speed)
+
+    self.velocity.x = inputX
+
+    local newPos,collideTop,collideBottom,collideLeft,collideRight = self:handleCollisions()
+
+    print(collideTop,collideBottom)
+    self.actor.pos = newPos
+
+    if love.keyboard.isDown('up') and collideBottom then
+        self.velocity.y = -20
+    end
+
+    if collideBottom then
+        if math.abs(self.velocity.x) > 0 then
             self.actor.spriteRenderer:setAnimation('run')
         else
             self.actor.spriteRenderer:setAnimation('stop')
         end
+    elseif self.velocity.y > 0 then
+        self.actor.spriteRenderer:setAnimation('fall')
+    else
+        self.actor.spriteRenderer:setAnimation('jump')
     end
+end
 
-    self.actor:move(velocity)
-
+function PlatformerBehavior:handleCollisions()
     if self.actor.scene then
-        if self.actor.pos.x < 0 then
-            self.actor.pos.x = 0
+        local newPos = Vector.new(0,0)
+        newPos.x,collideLeft,collideRight = clamp(self.actor.pos.x + self.velocity.x,0,self.actor.scene.width)
+        newPos.y,collideTop,collideBottom = clamp(self.actor.pos.y + self.velocity.y,0,self.actor.scene.height-32)
+
+        if collideTop or collideBottom then
+            self.velocity.y = 0
         end
 
-        if self.actor.pos.x > self.actor.scene.width then
-            self.actor.pos.x = self.actor.scene.width
-        end
+        return newPos,collideTop,collideBottom,collideLeft,collideRight
     end
+
+    return self.actor.pos + self.velocity,false,false,false,false
 end
 
 return PlatformerBehavior

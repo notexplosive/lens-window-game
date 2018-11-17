@@ -11,6 +11,7 @@ app.enabledControlButtons = {true,false,false}
 app.allowResizing = false
 
 function app:onStart(window,args)
+    self.scene = nil
     self.state.actors = {}
 end
 
@@ -66,10 +67,12 @@ function app:draw(selected,mp)
                         end
                     end
 
-                    if newOwner then
-                        self.behavior:loseOwnership(tuple.actor,newOwner)
-                    else
-                        self.behavior:destroyActor(tuple.actor)
+                    if tuple.actor.isLensed then
+                        if newOwner then
+                            self.behavior:loseOwnership(tuple.actor,newOwner)
+                        else
+                            self.behavior:destroyActor(tuple.actor)
+                        end
                     end
                 end
             end

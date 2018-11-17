@@ -21,6 +21,7 @@ function Sprite:createAnimation(animName,startQuad,endQuad)
     self.animations[animName] = {
         first=startQuad,
         last=endQuad,
+        name=animName
     }
 end
 
