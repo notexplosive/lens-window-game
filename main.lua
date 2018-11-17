@@ -61,4 +61,9 @@ function lastUpdate(dt)
             doubleClickTimer = 0.3
         end
     end
+
+    if State:get('fullscreenEnabled') ~= love.window.getFullscreen() then
+        print(State:get('fullscreenEnabled'),State.fullscreenEnabled)
+        love.window.setFullscreen(State:get('fullscreenEnabled'))
+    end
 end

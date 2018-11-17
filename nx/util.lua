@@ -83,9 +83,9 @@ function deleteFromList(table,element)
     local index = getIndex(table,element)
     if index then
         for i = index, #table do
-            table[i] = table[i+1]
-            return table[i]
+            table[i] = table[i + 1]
         end
+        return table[index]
     end
     return nil
 end

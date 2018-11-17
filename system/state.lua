@@ -21,6 +21,9 @@ function State:set(flagName,bool)
 end
 
 function State:get(flagName)
+    if self[flagName] == nil then
+        return false
+    end
     return self[flagName]
 end
 

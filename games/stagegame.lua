@@ -10,7 +10,7 @@ app.icon = 'shell'
 app.iconName = 'Stage'
 
 function app:onStart(window,args)
-    self.scene = Scene.new(window.canvas:getDimensions())
+    --self.scene = Scene.new(window.canvas:getDimensions())
 end
 
 function app:keyPress(key,isDesktop)

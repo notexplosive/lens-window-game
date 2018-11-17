@@ -10,7 +10,7 @@ function love.keypressed(key, scancode, isrepeat)
             selectedWindow:keyPress(key)
         end
     else
-        Apps.explorer.keyPress({state=desktopState},key,true)
+        LaunchApp('settings')
     end
 
     if key == 'f4' then

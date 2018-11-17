@@ -1,5 +1,6 @@
 local Vector = require('nx/vector')
 local Icons = require('system/icons')
+local Scene = require('nx/game/scene')
 local Window = {}
 
 Window.headerHeight = 32
@@ -35,6 +36,7 @@ function Window.new(title,width,height)
     self.parent = nil
     self.bottomContentY = 0
     self.scrollY = 0
+    self.scene = Scene.new(self.canvas:getDimensions())
 
     self.killTimer = 0
     self.flickerTimer = 0
@@ -56,6 +58,8 @@ function Window.new(title,width,height)
 end
 
 function Window:update(dt)
+    self.scene:update(dt)
+
     if self.killTimer > 0 then
         self.killTimer = self.killTimer - dt
     end
@@ -204,6 +208,8 @@ function Window:draw(x,y)
     local cw,ch = self.canvas:getDimensions()
     if cw ~= canvasWidth or ch ~= canvasHeight then
         self.canvas = love.graphics.newCanvas(canvasWidth, canvasHeight)
+        self.scene.width = canvasWidth
+        self.scene.height = canvasHeight
         self:bringToFront()
         self:onResize()
     end
@@ -223,6 +229,7 @@ function Window:draw(x,y)
 
     love.graphics.setColor(1, 1, 1, 1)
     self:canvasDraw(nx_AllDrawableObjects[1] == self,Vector.new(mousePosX,mousePosY))
+    self.scene:draw(0,self.scrollY)
     love.graphics.setCanvas(canvas)
 
     love.graphics.setColor(1,1,1,1)

@@ -14,7 +14,7 @@ app.icon = 'shell'
 app.iconName = 'Side Scroller'
 
 function app:onStart(window,args)
-    self.scene = Scene.new(window.canvas:getDimensions())
+    --self.scene = Scene.new(window.canvas:getDimensions())
     local act = Actor.new('StarPlatformerCharacter',true)
 
     act:addComponent(SpriteRenderer):setSprite(Assets.swordBoy)

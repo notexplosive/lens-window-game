@@ -51,8 +51,7 @@ function app:draw(selected,mp)
         
         local isLensed = isWithinBox(lensPosition.x,lensPosition.y,0,0,self.width,self.height)
         if selected then
-            if tuple.actor.isLensed ~= nil and tuple.actor.isLensed ~= isLensed then
-                DEBUG = true
+            if tuple.actor.isLensed ~= isLensed then
                 if isLensed then
                     if DEBUG then local snd = love.audio.newSource('sounds/no.ogg', 'static') snd:setPitch(2) snd:play() end
                     self.behavior:takeOwnership(tuple.actor,tuple.window)
@@ -61,7 +60,7 @@ function app:draw(selected,mp)
                     local windows = Window.getAllInDrawableOrder()
                     local newOwner = nil
                     for j,v in ipairs(windows) do
-                        if isWithinBox(tuple.actor.pos.x,tuple.actor.pos.y,windows[j]:getCanvasPositions()) then
+                        if v ~= self and isWithinBox(tuple.actor.pos.x,tuple.actor.pos.y,windows[j]:getCanvasPositions()) then
                             newOwner = windows[j]
                             break
                         end
@@ -69,6 +68,8 @@ function app:draw(selected,mp)
 
                     if newOwner then
                         self.behavior:loseOwnership(tuple.actor,newOwner)
+                    else
+                        self.behavior:destroyActor(tuple.actor)
                     end
                 end
             end
@@ -79,10 +80,12 @@ end
 
 function app.behavior:takeOwnership(actor,oldOwner)
     if not contains(self.state.actors,actor) then
-        -- if outside of bounds of window:
+        -- TODO: if outside of bounds of window
+        -- (which would mean re-calling this when leaving window bounds and lensed)
         actor.pos = actor.pos + oldOwner.pos
         actor:removeFromScene()
         append(self.state.actors,actor)
+        love.audio.newSource('sounds/no.ogg', 'static'):play()
     end
 end
 
@@ -92,6 +95,11 @@ function app.behavior:loseOwnership(actor,newOwner)
         actor.pos = actor.pos - newOwner.pos
         newOwner.scene:addActor(actor)
     end
+end
+
+function app.behavior:destroyActor(actor)
+    deleteFromList(self.state.actors,actor)
+    love.audio.newSource('sounds/typing.ogg', 'static'):play()
 end
 
 return app

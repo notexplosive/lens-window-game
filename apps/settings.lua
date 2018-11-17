@@ -8,7 +8,7 @@ local State = require('system/state')
 local UI = require('system/ui')
 local LoginScreen = require('system/loginscreen')
 
-local app = AppTemplate.new('Settings',440,480)
+local app = AppTemplate.new('Settings',240,280)
 app.icon = 'settings'
 app.iconName = 'Settings'
 app.enabledControlButtons = {true,false,true}
@@ -38,8 +38,10 @@ function app:onStart(window,args)
                 LoginScreen.loginInProgress = false
             end
         end),
-        UI.button.new('Another button',leftSide,topSide + 32),
-        UI.checkbox.new('myCoolCheckbox',leftSide,topSide + 64,'myCoolFlag'),
+        UI.button.new('Shut down',leftSide,topSide + 32, function()
+            love.event.quit(0)
+        end),
+        UI.checkbox.new('Fullscreen',leftSide,topSide + 64,'fullscreenEnabled',true),
         UI.checkbox.new('Scanline shader',leftSide,topSide + 64 + 24,'shaderEnabled',true),
     }
 end
