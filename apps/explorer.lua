@@ -33,7 +33,6 @@ function Explorer:draw(selected,mp)
     local img,quad = Icons.getQuad('back')
     love.graphics.setColor(1,1,1)
     love.graphics.draw(img,quad,bx,by)
-    --love.graphics.rectangle('fill', bx, by, bw, bh)
 
     if isWithinBox(mp.x,mp.y,bx,by,bw,bh) and gClickedThisFrame then
         local segments = self.state.dir:split('/')
@@ -41,7 +40,10 @@ function Explorer:draw(selected,mp)
 
         for i=1,#segments-1 do
             if segments[i] ~= '' then
-                path = path .. segments[i] .. '/'
+                path = path .. segments[i]
+                if i ~= #segments-1 then
+                    path = path .. '/'
+                end
             end
         end
 

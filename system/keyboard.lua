@@ -10,7 +10,9 @@ function love.keypressed(key, scancode, isrepeat)
             selectedWindow:keyPress(key)
         end
     else
-        LaunchApp('settings')
+        if key == 'escape' then
+            LaunchApp('settings')
+        end
     end
 
     if key == 'f4' then
