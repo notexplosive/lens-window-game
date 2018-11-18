@@ -16,6 +16,7 @@ function ArcheryHandle:awake()
     self.originalPos = self.actor.pos:clone()
     self.grabbed = false
     self.wiggleframe = 0
+    self.sound = love.audio.newSource('sounds/bow_setup.ogg','static')
 end
 
 function ArcheryHandle:draw()
@@ -38,11 +39,25 @@ function ArcheryHandle:draw()
     self.actor.scene:getActor('Bow').spriteRenderer.scaleY = height
     self.actor.scene:getActor('Bow').spriteRenderer.scaleX = 1 + power/500
 
+    if power > 50 and not self.playedSound then
+        self.sound:play()
+        self.playedSound = true
+    end
+
+    if power < 50 then
+        self.playedSound = false
+    end
+
+    if power > 100 then
+        self.sound:setPitch(power / 100)
+    end
+
     if love.mouse.isDown(1) then
         if self.grabbed then
             self.actor.pos = mp
         end
     else
+        self.sound:stop()
         if self.grabbed then
             local snd = love.audio.newSource('sounds/bow_fired.ogg', 'static')
             snd:setVolume( power/100 )
@@ -57,6 +72,7 @@ function ArcheryHandle:draw()
             self.actor.scene:addActor(arrow)
         end
         self.grabbed = false
+        self.playedSound = false
         self.wiggleframe = power
     end
 

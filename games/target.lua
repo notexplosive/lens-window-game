@@ -6,28 +6,23 @@ local Assets = require('assets')
 local Scene = require('nx/game/scene')
 
 local Actor = require('nx/game/actor')
-local ArcheryHandle = require('components/archeryhandle')
+local TargetBehavior = require('components/target')
 local SpriteRenderer = require('nx/game/components/spriterenderer')
 
-local app = GameTemplate.new('Archery Practice',300,128)
+local app = GameTemplate.new('Target',128 + 64,128 + 64)
 app.icon = 'app'
-app.iconName = 'Archery'
-app.needsFocus = true
+app.iconName = 'Target'
 
 function app:onStart(window,args)
-    local drawstring = Actor.new('Drawstring')
-    local bow = Actor.new('Bow')
-
-    bow:addComponent(SpriteRenderer)
-    bow.spriteRenderer:setSprite(Assets.bow)
-
-    drawstring:addComponent(ArcheryHandle)
-
-    bow.pos = drawstring.archeryHandle.originalPos:clone()
-
+    local target = Actor.new('Target')
+    target:addComponent(SpriteRenderer)
+    target.spriteRenderer:setSprite(Assets.target)
+    target.pos = Vector.new((128+64)/2,(128+64)/2)
+    
+    target:addComponent(TargetBehavior)
+    
     self.scene:addActor(
-        drawstring,
-        bow
+        target
     )
 end
 

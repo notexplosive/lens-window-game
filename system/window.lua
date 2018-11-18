@@ -61,7 +61,9 @@ end
 
 function Window:update(dt)
     if self.scene then -- Some apps (such as the lens) might delete their scene
-        self.scene:update(dt)
+        if self.needsFocus and self:getFocusWindow() == self or not self.needsFocus then
+            self.scene:update(dt)
+        end
     end
 
     if self.killTimer > 0 then
@@ -220,7 +222,16 @@ function Window:draw(x,y)
 
     love.graphics.setCanvas(self.canvas)
     love.graphics.setBlendMode("alpha")
-    love.graphics.setColor(0.9,0.9,0.8,1)
+    love.graphics.setColor(0.9,0.9,1,1)
+    
+    if self.needsFocus then
+        if nx_AllDrawableObjects[1] == self then
+            love.graphics.setColor(0.9,0.9,0.8,1)
+        end
+    else
+        love.graphics.setColor(0.9,0.9,0.8,1)
+    end
+
     love.graphics.rectangle('fill', 0, 0, love.graphics.getDimensions())
     local mousePosX,mousePosY = love.mouse.getPosition()
     mousePosX = mousePosX - self.pos.x

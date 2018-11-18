@@ -92,7 +92,6 @@ function app.behavior:takeOwnership(actor,oldOwner)
         actor.pos = actor.pos + oldOwner.pos
         actor:removeFromScene()
         append(self.state.actors,actor)
-        love.audio.newSource('sounds/no.ogg', 'static'):play()
     end
 end
 

@@ -75,4 +75,8 @@ function Actor:move(velocity)
     self.pos = self.pos + velocity
 end
 
+function Actor:onDestroy()
+    -- not implemented on purpose
+end
+
 return Actor

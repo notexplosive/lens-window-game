@@ -10,6 +10,7 @@ end
 function PlatformerBehavior:awake()
     self.speed = 4
     self.velocity = Vector.new(0,0)
+    self.actor.spriteRenderer.color = {0,0,0,1}
 end
 
 -- Might use this for debugging

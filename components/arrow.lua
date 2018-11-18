@@ -8,7 +8,6 @@ function Arrow.create()
 end
 
 function Arrow:awake()
-    print('arrow spawned')
     self.velocity = Vector.new(0,0)
 end
 
@@ -18,8 +17,16 @@ end
 
 function Arrow:update(dt)
     local tempPos = self.actor.pos + self.velocity * dt
-    self.velocity.y = self.velocity.y + 200 * dt
+    self.velocity.y = self.velocity.y + 500 * dt
     self.actor.pos = tempPos
+
+    self.actor.spriteRenderer.angle = math.sin(self.velocity.y/500)
+
+    if self.actor.scene then
+        if self.actor.pos.x > self.actor.scene.width or self.actor.pos.y > self.actor.scene.height then
+            self.actor:destroy()
+        end
+    end
 end
 
 return Arrow

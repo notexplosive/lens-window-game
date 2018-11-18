@@ -23,8 +23,15 @@ function Explorer:onStart(window,args)
     if window.state.dir == 'Games' then
         for i,game in ipairs(getAllGames()) do
             if game.showInGames then
-                print(game.slug)
                 append(window.state.content,{name = game.iconName .. '.exe', app = game.slug, icon = game.icon})
+            end
+        end
+    end
+
+    if window.state.dir == 'Desktop' then
+        for i,app in ipairs(getAllApps()) do
+            if app.showOnDesktop then
+                append(window.state.content,{name = app.iconName .. '.exe', app = app.slug, icon = app.icon})
             end
         end
     end
@@ -93,7 +100,7 @@ function drawIcons(state,selected,mp,desktop,self)
         love.graphics.setColor(1,1,1,1)
 
         local x = border + 5 + col*distanceApart
-        local y = border + row * (iconSize+distanceApart) + Explorer.pathFieldHeight
+        local y = border + row * (iconSize+(distanceApart/2)) + Explorer.pathFieldHeight
         
         if desktop then
             x = border + 5 + row*(distanceApart + 10)
