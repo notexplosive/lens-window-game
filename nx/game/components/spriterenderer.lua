@@ -12,9 +12,12 @@ function SpriteRenderer:awake()
     self.currentFrame = 0
     self.fps = 10
     self.scale = 1
+    self.scaleX = 1
+    self.scaleY = 1
     self.angle = 0
     self.flipX = false
     self.flipY = false
+    self.color = {1,1,1,1}
 end
 
 function SpriteRenderer:draw(x,y)
@@ -22,6 +25,10 @@ function SpriteRenderer:draw(x,y)
         local quad = self.sprite.quads[1]
         if self.currentAnimation then
             quad = self.sprite.quads[math.floor(self.currentFrame + self.currentAnimation.first)]
+        end
+
+        if quad == nil then
+            quad = love.graphics.newQuad(0, 0, self.sprite.gridWidth, self.sprite.gridWidth, self.sprite.image:getDimensions())
         end
 
         local xFactor,yFactor = 1,1
@@ -32,13 +39,15 @@ function SpriteRenderer:draw(x,y)
             yFactor = -1
         end
 
+        love.graphics.setColor(self.color)
+
         love.graphics.draw(self.sprite.image,
             quad,
             x,
             y,
             self.angle,
-            self.scale*xFactor,
-            self.scale*yFactor,
+            self.scale*xFactor*self.scaleX,
+            self.scale*yFactor*self.scaleY,
             self.sprite.gridWidth/2,
             self.sprite.gridHeight/2)
     end

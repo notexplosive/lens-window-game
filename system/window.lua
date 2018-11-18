@@ -37,6 +37,7 @@ function Window.new(title,width,height)
     self.bottomContentY = 0
     self.scrollY = 0
     self.scene = Scene.new(self.canvas:getDimensions())
+    self.scene.window = self
     self.associatedApp = nil
 
     self.killTimer = 0

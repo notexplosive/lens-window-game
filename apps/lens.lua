@@ -52,7 +52,8 @@ function app:draw(selected,mp)
         tuple.actor:draw(lensPosition:components())
         
         local isLensed = isWithinBox(lensPosition.x,lensPosition.y,0,0,self.width,self.height)
-        if selected then
+        local lensDrawIndex = getDrawIndex(self)
+        --if getDrawIndex(tuple.window) > lensDrawIndex then
             if tuple.actor.isLensed ~= isLensed then
                 if isLensed then
                     if DEBUG then local snd = love.audio.newSource('sounds/no.ogg', 'static') snd:setPitch(2) snd:play() end
@@ -62,9 +63,11 @@ function app:draw(selected,mp)
                     local windows = Window.getAllInDrawableOrder()
                     local newOwner = nil
                     for j,v in ipairs(windows) do
-                        if v ~= self and isWithinBox(tuple.actor.pos.x,tuple.actor.pos.y,windows[j]:getCanvasPositions()) then
-                            newOwner = windows[j]
-                            break
+                        if getDrawIndex(v) > lensDrawIndex then
+                            if v ~= self and isWithinBox(tuple.actor.pos.x,tuple.actor.pos.y,windows[j]:getCanvasPositions()) then
+                                newOwner = windows[j]
+                                break
+                            end
                         end
                     end
 
@@ -78,7 +81,7 @@ function app:draw(selected,mp)
                 end
             end
             tuple.actor.isLensed = isLensed
-        end
+        --end
     end
 end
 

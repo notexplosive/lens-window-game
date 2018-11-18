@@ -6,11 +6,11 @@ local Assets = require('assets')
 local Scene = require('nx/game/scene')
 
 local app = GameTemplate.new('Stage')
-app.icon = 'shell'
+app.icon = 'app'
 app.iconName = 'Stage'
 
 function app:onStart(window,args)
-    --self.scene = Scene.new(window.canvas:getDimensions())
+    
 end
 
 function app:keyPress(key,isDesktop)

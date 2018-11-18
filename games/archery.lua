@@ -6,23 +6,27 @@ local Assets = require('assets')
 local Scene = require('nx/game/scene')
 
 local Actor = require('nx/game/actor')
-local PlatformerComponent = require('components/platformer')
+local ArcheryHandle = require('components/archeryhandle')
 local SpriteRenderer = require('nx/game/components/spriterenderer')
 
-local app = GameTemplate.new('Side Scroller',300,300)
+local app = GameTemplate.new('Archery Practice',300,128)
 app.icon = 'app'
-app.iconName = 'Side Scroller'
+app.iconName = 'Archery'
 
 function app:onStart(window,args)
-    local act = Actor.new('StarPlatformerCharacter',true)
+    local drawstring = Actor.new('Drawstring')
+    local bow = Actor.new('Bow')
 
-    act:addComponent(SpriteRenderer):setSprite(Assets.swordBoy)
-    act.spriteRenderer.scale = 2
-    act:addComponent(PlatformerComponent)
-    act.pos = Vector.new(150,150)
+    bow:addComponent(SpriteRenderer)
+    bow.spriteRenderer:setSprite(Assets.bow)
+
+    drawstring:addComponent(ArcheryHandle)
+
+    bow.pos = drawstring.archeryHandle.originalPos:clone()
 
     self.scene:addActor(
-        act
+        drawstring,
+        bow
     )
 end
 
