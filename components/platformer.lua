@@ -14,8 +14,7 @@ end
 
 -- Might use this for debugging
 function PlatformerBehavior:draw()
-    love.graphics.setColor(0,0,0,1)
-    love.graphics.print(self.actor.spriteRenderer:getAnimation())
+
 end
 
 function PlatformerBehavior:update(dt)
@@ -38,11 +37,10 @@ function PlatformerBehavior:update(dt)
 
     local newPos,collideTop,collideBottom,collideLeft,collideRight = self:handleCollisions()
 
-    print(collideTop,collideBottom)
     self.actor.pos = newPos
 
     if love.keyboard.isDown('up') and collideBottom then
-        self.velocity.y = -20
+        self.velocity.y = -10
     end
 
     if collideBottom then
@@ -61,6 +59,11 @@ end
 function PlatformerBehavior:handleCollisions()
     if self.actor.scene then
         local newPos = Vector.new(0,0)
+
+        local _,alreadyCollidedLeft,alreadyCollidedRight = clamp(self.actor.pos.x,0,self.actor.scene.width)
+        local _,alreadyCollidedTop,alreadyCollidedBottom = clamp(self.actor.pos.y,0,self.actor.scene.height-32)
+
+        local collideBottom,collideTop,collideLeft,collideRight
         newPos.x,collideLeft,collideRight = clamp(self.actor.pos.x + self.velocity.x,0,self.actor.scene.width)
         newPos.y,collideTop,collideBottom = clamp(self.actor.pos.y + self.velocity.y,0,self.actor.scene.height-32)
 
@@ -68,7 +71,11 @@ function PlatformerBehavior:handleCollisions()
             self.velocity.y = 0
         end
 
-        return newPos,collideTop,collideBottom,collideLeft,collideRight
+        return newPos,
+            collideTop,
+            collideBottom,
+            collideLeft,
+            collideRight
     end
 
     return self.actor.pos + self.velocity,false,false,false,false
