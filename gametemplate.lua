@@ -9,7 +9,9 @@ function GameTemplate.new(name,width,height)
     self.enabledControlButtons = {true,false,true}
     self.allowResizing = false
     self.singleton = true
+
     self.showInGames = true
+    self.showOnDesktop = false
 
     function self:draw(selected,mp)
         love.graphics.setColor(1,1,1,1)

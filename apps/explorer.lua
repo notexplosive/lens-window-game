@@ -7,6 +7,7 @@ local Filesystem = require('system/filesystem')
 local app = AppTemplate.new('File Locator',450,450)
 app.icon = 'locator'
 app.iconName = 'Locator'
+app.showOnDesktop = true
 
 local Explorer = app
 Explorer.pathFieldHeight = 32
@@ -18,6 +19,15 @@ function Explorer:onStart(window,args)
 
     window.state.dir = args
     window.state.content = Filesystem.inGameLS(args)
+
+    if window.state.dir == 'Games' then
+        for i,game in ipairs(getAllGames()) do
+            if game.showInGames then
+                print(game.slug)
+                append(window.state.content,{name = game.iconName .. '.exe', app = game.slug, icon = game.icon})
+            end
+        end
+    end
 
     window.state.selectedIndex = nil
 end
@@ -47,8 +57,7 @@ function Explorer:draw(selected,mp)
             end
         end
 
-        self.state.dir = path
-        self.state.content = Filesystem.inGameLS(self.state.dir)
+        self:onStart(self,path)
     end
 
     -- breadcrumb bar
@@ -150,9 +159,7 @@ function drawIcons(state,selected,mp,desktop,self)
                             if desktop then
                                 executeFile(filename,{dir=filename})
                             else
-                                state.dir = filename
-                                state.content = Filesystem.inGameLS(state.dir)
-                                state.selectedIndex = nil
+                                self:onStart(self,filename)
                             end
                         else
                             executeFile(filename,v)

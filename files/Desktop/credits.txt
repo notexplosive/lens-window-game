@@ -4,6 +4,7 @@ I hope you enjoy it!
 Programmed by nxplv
 Written by nxplv
 Graphics by nxplv and Medamaudee
+Photos by nxplv
 
 Written in LÖVE2D
 Moonshine Shaders by vrld

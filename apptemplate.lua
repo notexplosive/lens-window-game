@@ -7,6 +7,7 @@ AppTemplate.positions = {}
 function AppTemplate.new(name,width,height)
     local self = newObject(AppTemplate)
     self.name = name
+    self.showOnDesktop = true
     self.width = width or 640
     self.height = height or 480
     self.behavior = {}

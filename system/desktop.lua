@@ -13,7 +13,6 @@ function Desktop.new()
     }
 
     -- Apps
-    -- TODO: create a "FakeFile" system so we can add files to the virtual pc that aren't actually in the real world filesystem
     for i,name in ipairs(Apps.names) do
         local app = Apps[name]
         if app.showOnDesktop ~= false then

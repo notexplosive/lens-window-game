@@ -69,9 +69,6 @@ function SpriteRenderer:setAnimation(animName)
         return
     end
 
-    love.audio.newSource('sounds/no.ogg', 'static'):play()
-    print(animName)
-
     self.currentAnimation = self.sprite.animations[animName]
     self.currentFrame = 0
     return self
