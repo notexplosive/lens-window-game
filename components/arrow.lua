@@ -20,7 +20,17 @@ function Arrow:update(dt)
     self.velocity.y = self.velocity.y + 500 * dt
     self.actor.pos = tempPos
 
-    self.actor.spriteRenderer.angle = math.sin(self.velocity.y/500)
+    local normal = self.velocity:normalized()
+    self.actor.spriteRenderer.angle = math.atan(normal.y,normal.x)
+    if math.abs(normal.x) < math.abs(normal.y) then
+        if normal.y > 0 then
+            self.actor.spriteRenderer.angle = self.actor.spriteRenderer.angle + math.pi/4
+        end
+
+        if normal.y < 0 then
+            self.actor.spriteRenderer.angle = self.actor.spriteRenderer.angle - math.pi/4
+        end
+    end
 
     if self.actor.scene then
         if self.actor.pos.x > self.actor.scene.width or self.actor.pos.y > self.actor.scene.height then

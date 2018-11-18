@@ -8,6 +8,8 @@ local Scene = require('nx/game/scene')
 local app = GameTemplate.new('Stage')
 app.icon = 'app'
 app.iconName = 'Stage'
+-- DELETE THIS LINE IF USING TEMPLATE
+app.showInGames = false
 
 function app:onStart(window,args)
     

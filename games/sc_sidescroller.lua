@@ -9,9 +9,9 @@ local Actor = require('nx/game/actor')
 local PlatformerComponent = require('components/platformer')
 local SpriteRenderer = require('nx/game/components/spriterenderer')
 
-local app = GameTemplate.new('Side Scroller',300,300)
+local app = GameTemplate.new('Shadow Man',300,300)
 app.icon = 'app'
-app.iconName = 'Side Scroller'
+app.iconName = 'Shadow'
 
 function app:onStart(window,args)
     local act = Actor.new('StarPlatformerCharacter',true)

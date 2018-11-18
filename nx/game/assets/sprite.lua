@@ -9,8 +9,8 @@ function Sprite.new(filename,gridSizeX,gridSizeY)
     self.animations = {}
     self.gridWidth = gridSizeX
     self.gridHeight = gridSizeY
-    for y = 0, self.image:getHeight()-gridSizeY*2,gridSizeY do
-        for x = 0, self.image:getWidth()-gridSizeX*2,gridSizeX do
+    for y = 0, self.image:getHeight()-gridSizeY,gridSizeY do
+        for x = 0, self.image:getWidth()-gridSizeX,gridSizeX do
             self.quads[#self.quads + 1] = love.graphics.newQuad(x,y,gridSizeX,gridSizeY,self.image:getDimensions())
         end
     end

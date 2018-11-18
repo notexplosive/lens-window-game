@@ -1,4 +1,4 @@
-It's improtant to set Goals:
-- Hit all my targets
-- Find my keys (all 3 of them)
-- Finish the game
+Objectives:
+    - Hit all my targets
+    - Find my keys
+    - Remember my password

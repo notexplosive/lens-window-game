@@ -68,7 +68,7 @@ function Scene:getActorIndex(actor)
 end
 
 function Scene:getAllActors()
-    return self.actors
+    return copyList(self.actors)
 end
 
 return Scene

@@ -92,6 +92,14 @@ function append(table,element)
     table[#table + 1] = element
 end
 
+function copyList(list)
+    local copy = {}
+    for i,v in ipairs(list) do
+        append(copy,v)
+    end
+    return copy
+end
+
 function deleteFromList(table,element)
     local index = getIndex(table,element)
     if index then

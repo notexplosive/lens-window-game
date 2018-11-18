@@ -3,6 +3,7 @@ local Actor = require('nx/game/actor')
 local SpriteRenderer = require('nx/game/components/spriterenderer')
 local Assets = require('assets')
 local ArrowBehavior = require('components/arrow')
+local Window = require('system/window')
 local ArcheryHandle = {}
 
 ArcheryHandle.name = 'archeryHandle'
@@ -20,6 +21,10 @@ function ArcheryHandle:awake()
 end
 
 function ArcheryHandle:draw()
+    local selected = Window.getFocusWindow() == self.actor.scene.window
+    if not selected then
+        return
+    end
     local mp = Vector.new(love.mouse.getPosition()) - self.actor.scene.window.pos - Vector.new(0,32)
     mp.x = clamp(mp.x, 0, self.actor.scene.width-100)
     mp.y = clamp(mp.y, 0, self.actor.scene.height)
