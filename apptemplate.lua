@@ -48,7 +48,8 @@ function AppTemplate:spawn(args)
         'allowResizing',
         'enabledControlButtons',
         'scene',
-        'needsFocus'
+        'needsFocus',
+        'slug'
     }
 
     for i,prop in ipairs(injectedPropertiesAndMethods) do

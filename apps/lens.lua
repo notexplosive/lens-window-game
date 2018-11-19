@@ -53,36 +53,32 @@ function app:draw(selected,mp)
         
         local isLensed = isWithinBox(lensPosition.x,lensPosition.y,0,0,self.width,self.height)
         local lensDrawIndex = getDrawIndex(self)
-        --if getDrawIndex(tuple.window) > lensDrawIndex then
-            if tuple.actor.isLensed ~= isLensed then
-                if isLensed then
-                    if DEBUG then local snd = love.audio.newSource('sounds/no.ogg', 'static') snd:setPitch(2) snd:play() end
-                    self.behavior:takeOwnership(tuple.actor,tuple.window)
-                else
-                    if DEBUG then local snd = love.audio.newSource('sounds/no.ogg', 'static') snd:setPitch(2.5) snd:play() end
-                    local windows = Window.getAllInDrawableOrder()
-                    local newOwner = nil
-                    
-                    for j,v in ipairs(windows) do
-                        if getDrawIndex(v) > lensDrawIndex then
-                            if v ~= self and isWithinBox(tuple.actor.pos.x,tuple.actor.pos.y,windows[j]:getCanvasPositions()) then
-                                newOwner = windows[j]
-                                break
-                            end
-                        end
+        if tuple.actor.isLensed ~= isLensed then
+            if isLensed then
+                if DEBUG then local snd = love.audio.newSource('sounds/no.ogg', 'static') snd:setPitch(2) snd:play() end
+                self.behavior:takeOwnership(tuple.actor,tuple.window)
+            else
+                if DEBUG then local snd = love.audio.newSource('sounds/no.ogg', 'static') snd:setPitch(2.5) snd:play() end
+                local windows = Window.getAllInDrawableOrder()
+                local newOwner = nil
+                
+                for j,v in ipairs(windows) do
+                    if v ~= self and isWithinBox(tuple.actor.pos.x,tuple.actor.pos.y,windows[j]:getCanvasPositions()) then
+                        newOwner = windows[j]
+                        break
                     end
+                end
 
-                    if tuple.actor.isLensed then
-                        if newOwner then
-                            self.behavior:loseOwnership(tuple.actor,newOwner)
-                        else
-                            self.behavior:destroyActor(tuple.actor)
-                        end
+                if tuple.actor.isLensed then
+                    if newOwner then
+                        self.behavior:loseOwnership(tuple.actor,newOwner)
+                    else
+                        self.behavior:destroyActor(tuple.actor)
                     end
                 end
             end
-            tuple.actor.isLensed = isLensed
-        --end
+        end
+        tuple.actor.isLensed = isLensed
     end
 end
 

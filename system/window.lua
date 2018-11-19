@@ -268,11 +268,23 @@ end
 
 function Window.getAllInDrawableOrder()
     local output = {}
+    local lens = nil
+    
+    for i,window in ipairs(Window.getAll()) do
+        if window.slug == 'lens' then
+            lens = window
+            append(output,window)
+        end
+    end
+
     for i=1,#nx_AllDrawableObjects do
-        if nx_AllDrawableObjects[i].type == Window and nx_AllDrawableObjects[i].visible then
+        if nx_AllDrawableObjects[i].type == Window 
+            and nx_AllDrawableObjects[i].visible 
+            and nx_AllDrawableObjects[i] ~= lens then
             append(output,nx_AllDrawableObjects[i])
         end
     end
+    print(#output)
     return output
 end
 
@@ -561,6 +573,7 @@ function Window:close()
     if self.onClose then
         self:onClose()
     end
+    self.closed = true
     self:destroy()
 end
 

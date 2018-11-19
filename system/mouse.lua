@@ -9,7 +9,7 @@ function love.mousepressed(x, y, button, isTouch)
         gClickedThisFrame = true
         if State.isLoggedIn then
             gSelectedWindow = nil
-            local windows = Window.getAllDraw()
+            local windows = Window.getAllInDrawableOrder()
             for i,window in ipairs(windows) do
                 if window:getHover() and window.visible and mousePointer:getQuad() == 'pointer' then
                     gSelectedWindow = window

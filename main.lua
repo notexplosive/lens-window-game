@@ -38,6 +38,12 @@ function lastDraw()
         menuBar:draw(0,love.graphics.getHeight() - Window.menuBarHeight)
     end
 
+    for i,window in ipairs(Window.getAll()) do
+        if window.slug == 'lens' then
+            window:draw()
+        end
+    end
+
     mousePointer:setFlip(false)
     mousePointer:setAngle(0)
     mousePointer:setQuad('pointer')
