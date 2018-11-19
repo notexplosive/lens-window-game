@@ -12,16 +12,28 @@ function SimplePhysics:awake()
 end
 
 function SimplePhysics:update(dt)
-    self.actor.pos = self.actor.pos + self.velocity
+    local newPos = self.actor.pos + self.velocity
+
+    if self.actor.collider and not self.actor.collider.collidedThisFrame or not self.actor.collider then
+        self.actor.pos = newPos
+    end
 
     if self.actor.scene then
-        local _,x1,x2 = clamp(self.actor.pos.x,0,self.actor.scene.width)
-        local _,y1,y2 = clamp(self.actor.pos.y,0,self.actor.scene.height)
+        local px,x1,x2 = clamp(self.actor.pos.x,0,self.actor.scene.width)
+        local py,y1,y2 = clamp(self.actor.pos.y,0,self.actor.scene.height)
+
+        -- this might mess with collision because pos was just definitively assigned
+        self.actor.pos = Vector.new(px,py)
 
         if x1 or x2 or y1 or y2 then
-            self.actor:destroy()
+            self:onHitEdge()
         end
     end
+end
+
+-- default
+function SimplePhysics:onHitEdge()
+    self.actor:destroy()
 end
 
 return SimplePhysics

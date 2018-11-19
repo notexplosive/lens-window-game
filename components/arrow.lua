@@ -13,10 +13,6 @@ function Arrow:awake()
     self.actor:addComponent(SimpleCollider)
 end
 
-function Arrow:draw()
-    
-end
-
 function Arrow:update(dt)
     local tempPos = self.actor.pos + self.velocity * dt
     self.velocity.y = self.velocity.y + 500 * dt

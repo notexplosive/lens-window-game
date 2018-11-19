@@ -54,6 +54,7 @@ end
 
 -- a component is anything that has a draw function OR and update function
 function Actor:addComponent(componentClass)
+    assert(componentClass,"Nil component")
     assert(componentClass.name,"Component needs a name")
     assert(componentClass.update or componentClass.draw,componentClass.name .. ' does not have update or draw')
     local component = componentClass.create()
