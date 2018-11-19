@@ -22,10 +22,10 @@ end
 
 function ArcheryHandle:draw()
     local selected = Window.getFocusWindow() == self.actor.scene.window
-    if not selected then
-        return
-    end
     local mp = Vector.new(love.mouse.getPosition()) - self.actor.scene.window.pos - Vector.new(0,32)
+    if not selected then
+        mp = Vector.new(0,0)
+    end
     mp.x = clamp(mp.x, 0, self.actor.scene.width-100)
     mp.y = clamp(mp.y, 0, self.actor.scene.height)
 

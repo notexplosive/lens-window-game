@@ -605,4 +605,15 @@ function Window:spawnChild(appName,args)
     return self.child
 end
 
+function Window.getTopCanvasAtPosition(position,exclude)
+    for i,window in ipairs(Window.getAllInDrawableOrder()) do
+        if window ~= exclude then
+            if isWithinBox(position.x,position.y,window:getCanvasPositions()) then
+                return window
+            end
+        end
+    end
+    return nil
+end
+
 return Window

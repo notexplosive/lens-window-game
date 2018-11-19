@@ -5,7 +5,7 @@ local AppTemplate = require('apptemplate')
 local Filesystem = require('system/filesystem')
 
 local app = AppTemplate.new('Lens',128,128)
-app.icon = 'shell'
+app.icon = 'lens'
 app.iconName = 'Lens'
 app.enabledControlButtons = {true,false,false}
 app.allowResizing = false
@@ -40,7 +40,7 @@ function app:draw(selected,mp)
         local globalPosition = tuple.actor.pos:clone()
         if tuple.window then
             globalPosition = globalPosition + tuple.window.pos
-        end
+    end
 
         local lensPosition = globalPosition - self.pos
 
@@ -62,6 +62,7 @@ function app:draw(selected,mp)
                     if DEBUG then local snd = love.audio.newSource('sounds/no.ogg', 'static') snd:setPitch(2.5) snd:play() end
                     local windows = Window.getAllInDrawableOrder()
                     local newOwner = nil
+                    
                     for j,v in ipairs(windows) do
                         if getDrawIndex(v) > lensDrawIndex then
                             if v ~= self and isWithinBox(tuple.actor.pos.x,tuple.actor.pos.y,windows[j]:getCanvasPositions()) then

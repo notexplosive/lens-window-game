@@ -60,19 +60,22 @@ function Actor:addComponent(componentClass)
     component.actor = self
 
     self[component.name] = component
+    
+    append(self.components,component)
 
     if component.awake then
         component:awake()
     end
-    
-    append(self.components,component)
-
     return component
 end
 
 function Actor:move(velocity)
     assert(velocity.type == Vector)
     self.pos = self.pos + velocity
+end
+
+function Actor:setPosition(pos)
+    self.pos = pos:clone()
 end
 
 function Actor:onDestroy()

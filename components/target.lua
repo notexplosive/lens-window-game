@@ -8,7 +8,7 @@ end
 
 function Target:awake()
     self.stateIndex = 1
-    self.states = {0, math.pi/4, math.pi/2, math.pi}
+    self.states = {0, math.pi/2, math.pi}
 end
 
 function Target:draw()

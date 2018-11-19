@@ -56,6 +56,22 @@ function PlatformerBehavior:update(dt)
     else
         self.actor.spriteRenderer:setAnimation('jump')
     end
+
+    -- Get hit by other things
+    if self.actor.scene then
+        for i,actor in ipairs(self.actor.scene:getAllActors()) do 
+            if actor ~= self then
+                local distance = (actor.pos - self.actor.pos):length()
+                if distance < 32 then
+                    if actor.name == 'Arrow' then
+                        love.audio.newSource('sounds/ouch.ogg','static'):play()
+                        self.actor:destroy()
+                        actor:destroy()
+                    end
+                end
+            end
+        end
+    end
 end
 
 function PlatformerBehavior:handleCollisions()

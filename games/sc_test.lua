@@ -4,30 +4,29 @@ local State = require('system/state')
 local GameTemplate = require('gametemplate')
 local Assets = require('assets')
 local Scene = require('nx/game/scene')
-
 local Actor = require('nx/game/actor')
-local ArcheryHandle = require('components/archeryhandle')
-local SpriteRenderer = require('nx/game/components/spriterenderer')
 
-local app = GameTemplate.new('Archery Practice',300,128)
+local SpriteRenderer = require('nx/game/components/spriterenderer')
+local TurretBehavior = require('components/turret')
+
+local app = GameTemplate.new('Lens Test',250,250)
 app.icon = 'app'
-app.iconName = 'Archery'
+app.iconName = 'Lens Test'
+-- app.showInGames = false
 
 function app:onStart(window,args)
-    local drawstring = Actor.new('Drawstring')
-    local bow = Actor.new('Bow')
-
-    bow:addComponent(SpriteRenderer)
-    bow.spriteRenderer:setSprite(Assets.bow)
-
-    drawstring:addComponent(ArcheryHandle)
-
-    bow.pos = drawstring.archeryHandle.originalPos:clone()
+    local turret = Actor.new('Turret')
+    
+    turret.pos = Vector.new(125,125)
+    turret:addComponent(TurretBehavior)
 
     self.scene:addActor(
-        drawstring,
-        bow
+        turret
     )
+
+    for i=1,128 do
+        self:update(1/60)
+    end
 end
 
 function app:keyPress(key,isDesktop)
