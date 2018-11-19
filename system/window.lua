@@ -60,7 +60,7 @@ function Window.new(title,width,height)
 end
 
 function Window:update(dt)
-    if self.scene then -- Some apps (such as the lens) might delete their scene
+    if self.scene and self.visible then -- Some apps (such as the lens) might delete their scene
         if self.needsFocus and self:getFocusWindow() == self or not self.needsFocus then
             self.scene:update(dt)
         end
@@ -244,7 +244,7 @@ function Window:draw(x,y)
 
     love.graphics.setColor(1, 1, 1, 1)
     self:canvasDraw(nx_AllDrawableObjects[1] == self,Vector.new(mousePosX,mousePosY))
-    if self.scene then -- Some apps (such as the lens) might delete their scene
+    if self.scene and self.visible then -- Some apps (such as the lens) might delete their scene
         self.scene:draw(0,self.scrollY)
     end
     love.graphics.setCanvas(canvas)
@@ -284,7 +284,7 @@ function Window.getAllInDrawableOrder()
             append(output,nx_AllDrawableObjects[i])
         end
     end
-    print(#output)
+    
     return output
 end
 

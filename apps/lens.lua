@@ -10,6 +10,8 @@ app.iconName = 'Lens'
 app.enabledControlButtons = {true,false,false}
 app.allowResizing = false
 app.singleton = true
+app.showOnDesktop = false
+app.showInGames = true
 
 function app:onStart(window,args)
     self.scene = nil
@@ -102,7 +104,7 @@ end
 
 function app.behavior:destroyActor(actor)
     deleteFromList(self.state.actors,actor)
-    love.audio.newSource('sounds/typing.ogg', 'static'):play()
+    love.audio.newSource('sounds/snap.ogg', 'static'):play()
 end
 
 return app

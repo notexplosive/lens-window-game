@@ -1,4 +1,5 @@
 local Vector = require('nx/vector')
+local SimpleCollider = require('components/simplecollider')
 local PlatformerBehavior = {}
 
 PlatformerBehavior.name = 'platformerBehavior'
@@ -11,6 +12,13 @@ function PlatformerBehavior:awake()
     self.speed = 4
     self.velocity = Vector.new(0,0)
     self.actor.spriteRenderer.color = {0,0,0,1}
+
+    self.actor:addComponent(SimpleCollider).onCollide = function(self,other)
+        if other.actor.name == 'Arrow' then
+            love.audio.newSource('sounds/ouch.ogg','static'):play()
+            other.actor:destroy()
+        end
+    end
 end
 
 -- Might use this for debugging
@@ -64,9 +72,9 @@ function PlatformerBehavior:update(dt)
                 local distance = (actor.pos - self.actor.pos):length()
                 if distance < 32 then
                     if actor.name == 'Arrow' then
-                        love.audio.newSource('sounds/ouch.ogg','static'):play()
-                        self.actor:destroy()
-                        actor:destroy()
+                        --love.audio.newSource('sounds/ouch.ogg','static'):play()
+                        --self.actor:destroy()
+                        --actor:destroy()
                     end
                 end
             end

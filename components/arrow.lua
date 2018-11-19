@@ -1,4 +1,5 @@
 local Vector = require('nx/vector')
+local SimpleCollider = require('components/simplecollider')
 local Arrow = {}
 
 Arrow.name = 'arrowBehavior'
@@ -9,6 +10,7 @@ end
 
 function Arrow:awake()
     self.velocity = Vector.new(0,0)
+    self.actor:addComponent(SimpleCollider)
 end
 
 function Arrow:draw()

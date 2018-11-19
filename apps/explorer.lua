@@ -26,6 +26,12 @@ function Explorer:onStart(window,args)
                 append(window.state.content,{name = game.iconName .. '.exe', app = game.slug, icon = game.icon})
             end
         end
+
+        for i,game in ipairs(getAllApps()) do
+            if game.showInGames then
+                append(window.state.content,{name = game.iconName .. '.exe', app = game.slug, icon = game.icon})
+            end
+        end
     end
 
     if window.state.dir == 'Desktop' then
