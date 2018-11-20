@@ -24,6 +24,11 @@ function executeFile(filename,data)
         LaunchApp(data.app)
     end
 
+
+    if format == 'png' then
+        LaunchApp('imageviewer',filename)
+    end
+
     if format == 'll' then
         LaunchApp('shell',filename)
     end

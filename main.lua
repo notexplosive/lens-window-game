@@ -58,6 +58,7 @@ local doubleClickTimer = 0
 function lastUpdate(dt)
     menuBar:update(dt)
     doubleClickTimer = doubleClickTimer - dt
+    desktop:update(dt)
 
     if gClickedThisFrame then
         if doubleClickTimer > 0 then

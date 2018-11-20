@@ -41,6 +41,10 @@ function createFileObject(filename)
         ic = 'text'
     end
 
+    if ext == 'png' then
+        ic = 'image'
+    end
+
     return {icon=ic,name=filename}
 end
 

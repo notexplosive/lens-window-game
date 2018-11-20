@@ -22,7 +22,7 @@ end
 
 function TurretBehavior:update(dt)
     self.time = self.time + dt
-    if self.time > 0.1 then
+    if self.time > 0.2 then
         self.time = 0
         local bullet = Actor.new('Bullet',true)
         bullet.pos = self.actor.pos:clone()

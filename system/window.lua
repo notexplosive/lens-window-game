@@ -615,6 +615,7 @@ end
 function Window:spawnChild(appName,args)
     self.child = LaunchApp(appName,args)
     self.child.parent = self
+    self.child.pos = self.pos + Vector.new(self.width,self.height)/2 - Vector.new(self.child.width,self.child.height)/2
     return self.child
 end
 

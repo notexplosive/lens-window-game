@@ -8,7 +8,7 @@ end
 
 function Target:awake()
     self.stateIndex = 1
-    if State:get('targets') then
+    if State:get('targets') ~= false then
         self.stateIndex = State:get('targets')
     end
     self.states = {0, math.pi/2, math.pi}

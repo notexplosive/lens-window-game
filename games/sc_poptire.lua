@@ -55,8 +55,7 @@ function app:keyPress(key,isDesktop)
 end
 
 function app:draw()
-    love.graphics.setColor(0,0.3,0.3,1)
-    love.graphics.rectangle('fill',0,0,self.canvas:getDimensions())
+    
 end
 
 function app:update(dt)

@@ -31,6 +31,11 @@ function State:get(flagName)
     if self[flagName] == nil then
         return false
     end
+
+    if tonumber(self[flagName]) then
+        return tonumber(self[flagName])
+    end
+
     return self[flagName]
 end
 

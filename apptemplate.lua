@@ -28,6 +28,7 @@ function AppTemplate:spawn(args)
         return
     end
 
+    AppTemplate.positions[self.name] = AppTemplate.positions[self.name] + Vector.new(10,10)
     local w = Window.new(self.name,self.width,self.height)
     w.canvasDraw = self.draw
     w.canvasUpdate = self.update
