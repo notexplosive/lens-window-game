@@ -50,7 +50,6 @@ function PlatformerBehavior:update(dt)
 
     if love.keyboard.isDown('up') and collideBottom then
         self.velocity.y = -10
-        love.audio.newSource('sounds/hup.ogg','static'):play()
     end
 
     if collideBottom then

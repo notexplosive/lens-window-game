@@ -51,6 +51,10 @@ function ForceZone:update(dt)
                 actor.arrowBehavior.velocity.x = actor.arrowBehavior.velocity.x * 0.5
                 actor.arrowBehavior.velocity.y = actor.arrowBehavior.velocity.y - 50
             end
+
+            if actor.simplePhysics then
+                actor.simplePhysics.velocity.y = actor.simplePhysics.velocity.y - 5
+            end
         end
     end
 end

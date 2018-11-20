@@ -1,5 +1,6 @@
 local Vector = require('nx/vector')
 local SimpleCollider = require('components/simplecollider')
+local SimplePhysics = require('components/simplephysics')
 local Arrow = {}
 
 Arrow.name = 'arrowBehavior'
@@ -9,16 +10,20 @@ function Arrow.create()
 end
 
 function Arrow:awake()
-    self.velocity = Vector.new(0,0)
     self.actor:addComponent(SimpleCollider)
+    local phys = self.actor:addComponent(SimplePhysics)
+    phys.onHitEdge = function(self,left,right,top,bottom)
+        if not top then
+            self.actor:destroy()
+        end
+    end
+
 end
 
 function Arrow:update(dt)
-    local tempPos = self.actor.pos + self.velocity * dt
-    self.velocity.y = self.velocity.y + 500 * dt
-    self.actor.pos = tempPos
+    self.actor.simplePhysics.velocity.y = self.actor.simplePhysics.velocity.y + dt*32
 
-    local normal = self.velocity:normalized()
+    local normal = self.actor.simplePhysics.velocity:normalized()
     self.actor.spriteRenderer.angle = math.atan(normal.y,normal.x)
     if math.abs(normal.x) < math.abs(normal.y) then
         if normal.y > 0 then
@@ -30,11 +35,11 @@ function Arrow:update(dt)
         end
     end
 
-    if self.actor.scene then
-        if self.actor.pos.x > self.actor.scene.width or self.actor.pos.y > self.actor.scene.height then
-            self.actor:destroy()
-        end
-    end
+    -- if self.actor.scene then
+    --     if self.actor.pos.x > self.actor.scene.width or self.actor.pos.y > self.actor.scene.height then
+    --         self.actor:destroy()
+    --     end
+    -- end
 end
 
 return Arrow

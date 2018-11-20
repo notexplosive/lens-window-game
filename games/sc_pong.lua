@@ -15,7 +15,7 @@ local EmptyRenderer = require('nx/game/components/emptyrenderer')
 local app = GameTemplate.new('Pong',250,250)
 app.icon = 'app'
 app.iconName = 'Pong'
--- app.showInGames = false
+app.showInGames = false
 
 function drawPaddle(self,x,y)
     love.graphics.setColor(1,1,1,1)
@@ -53,14 +53,17 @@ function app:onStart(window,args)
 
     ball:addComponent(SimpleCollider).customCollide = function(self,other)
         if other.actor.collider.type == BoxCollider then
-            local normalizedVel = self.actor.simplePhysics.velocity--:normalized()
+            local normalizedVel = self.actor.simplePhysics.velocity:normalized()
             normalizedVel = normalizedVel * 8 -- radius
             if isWithinBox(
                 self.actor.pos.x + normalizedVel.x,
                 self.actor.pos.y + normalizedVel.y,
                 other.actor.collider:getCollisionBox()
                 ) then
-                    self:onCollide(other.actor.collider)
+                    --self:onCollide(other.actor.collider)
+
+                    -- you wouldn't normally call another body's onCollide, would risk infinite loop
+                    other.actor.collider:onCollide(self)
             end
             self.actor.simplePhysics.velocity.y = -self.actor.simplePhysics.velocity.y
         end

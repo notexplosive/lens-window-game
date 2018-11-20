@@ -24,8 +24,8 @@ function app:onStart(window,args)
     fan.pos = Vector.new(100,400-32)
 
     force:addComponent(ForceZone)
-    force.pos = Vector.new(20,180)
-    force.forceZoneBehavior.width = 160
+    force.pos = Vector.new(0,180)
+    force.forceZoneBehavior.width = 200
     force.forceZoneBehavior.height = 200
 
     self.scene:addActor(

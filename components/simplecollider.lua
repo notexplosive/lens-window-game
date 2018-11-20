@@ -29,7 +29,7 @@ end
 
 function SimpleCollider:circleCollide(otherCollider)
     if otherCollider.type == SimpleCollider then
-        local distance = (actor.pos - self.actor.pos):length()
+        local distance = (otherCollider.actor.pos - self.actor.pos):length()
         if distance < self.radius + otherCollider.radius then
             self.collidedThisFrame = true
             self:onCollide(otherCollider)

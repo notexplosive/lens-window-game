@@ -73,7 +73,7 @@ function ArcheryHandle:draw()
             arrow:addComponent(ArrowBehavior)
             arrow.spriteRenderer:setSprite(Assets.arrow)
             arrow.pos = self.originalPos:clone()
-            arrow.arrowBehavior.velocity = firingVec * 5
+            arrow.simplePhysics.velocity = firingVec / 8
             self.actor.scene:addActor(arrow)
         end
         self.grabbed = false

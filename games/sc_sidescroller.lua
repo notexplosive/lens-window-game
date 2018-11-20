@@ -14,7 +14,7 @@ app.icon = 'app'
 app.iconName = 'Shadow'
 
 function app:onStart(window,args)
-    local act = Actor.new('StarPlatformerCharacter',true)
+    local act = Actor.new('ShadowMan')
 
     act:addComponent(SpriteRenderer):setSprite(Assets.swordBoy)
     act.spriteRenderer.scale = 2
