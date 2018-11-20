@@ -1,5 +1,5 @@
 local Target = {}
-
+local State = require('system/state')
 Target.name = 'target'
 
 function Target.create()
@@ -8,10 +8,14 @@ end
 
 function Target:awake()
     self.stateIndex = 1
+    if State:get('targets') then
+        self.stateIndex = State:get('targets')
+    end
     self.states = {0, math.pi/2, math.pi}
 end
 
 function Target:draw()
+
 end
 
 function Target:update(dt)
@@ -29,6 +33,7 @@ function Target:update(dt)
                 if angle < 0.6 then
                     love.audio.newSource('sounds/victory.ogg','static'):play()
                     self.stateIndex = self.stateIndex + 1
+                    State:persist('targets',self.stateIndex)
                     if self.states[self.stateIndex] == nil then
                         self.actor:destroy()
                     end

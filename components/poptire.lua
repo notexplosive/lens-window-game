@@ -83,7 +83,7 @@ function Poptire:update(dt)
 
     self.actor.simplePhysics.velocity = self.actor.simplePhysics.velocity + Vector.new(0,dt) * 40
 
-    if self.actor.simpleCollider.radius <= 10 then
+    if self.score >= 20 then
         self.actor:destroy()
         -- drop key
     end

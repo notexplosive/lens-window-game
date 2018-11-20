@@ -22,7 +22,7 @@ function app:onStart(window,args)
     local ball = Actor.new('Tire',true)
 
     ball.pos = Vector.new(self.width/2,self.height/2)
-    ball:addComponent(SimpleCollider).radius = 32
+    ball:addComponent(SimpleCollider).radius = 48
     ball:addComponent(EmptyRenderer).draw = function(self,x,y)
         if self.actor.scene then
             love.graphics.setColor(0,0,0,0.2)
@@ -55,7 +55,7 @@ function app:keyPress(key,isDesktop)
 end
 
 function app:draw()
-    love.graphics.setColor(0.5,0.5,0.7,1)
+    love.graphics.setColor(0,0.3,0.3,1)
     love.graphics.rectangle('fill',0,0,self.canvas:getDimensions())
 end
 

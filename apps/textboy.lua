@@ -88,12 +88,12 @@ end
 
 function app:keyPress(key)
     self.state.frame = 0
-    if key == 'return' then
-        self.state.text = self.state.text .. '\n'
-    end
-
-    if key == 'backspace' then
-        self.state.text = self.state.text:sub(1, -2)
+    if self.state.storedText == nil then
+        local defaultPhrase = "The quick brown fox jumped over the lazy\n\nI didn't get around to actually\nimplementing this feature.\n\n\nfollow me on twitter for updates on the\nfull version of this game"
+        local char = defaultPhrase:charAt(self.state.text:len()+1)
+        if char then
+            self.state.text = self.state.text .. char
+        end
     end
 end
 
