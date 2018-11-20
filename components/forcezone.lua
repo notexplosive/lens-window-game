@@ -44,18 +44,27 @@ function ForceZone:update(dt)
 
     local allActors = self.actor.scene:getAllActors()
 
+    local hasAtLeastOneActor = false
+
     for i,actor in ipairs(allActors) do
         if isWithinBox(actor.pos.x,actor.pos.y,self.actor.pos.x,self.actor.pos.y,self.width,self.height) then
-            if actor.arrowBehavior then
-                local distance = (actor.pos - self.actor.pos):length()
-                actor.arrowBehavior.velocity.x = actor.arrowBehavior.velocity.x * 0.5
-                actor.arrowBehavior.velocity.y = actor.arrowBehavior.velocity.y - 50
-            end
-
             if actor.simplePhysics then
+                hasAtLeastOneActor = true
                 actor.simplePhysics.velocity.y = actor.simplePhysics.velocity.y - 5
+
+                if actor.name == 'Arrow' then
+                    -- arrows get more push
+                    actor.simplePhysics.velocity.x = actor.simplePhysics.velocity.x/2
+                    actor.simplePhysics.velocity.y = actor.simplePhysics.velocity.y - 5
+                end
             end
         end
+    end
+
+    if hasAtLeastOneActor then
+        -- play sound?
+    else
+        -- stop sound?
     end
 end
 

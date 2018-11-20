@@ -21,7 +21,12 @@ function Target:update(dt)
         if v.window == self.actor.scene.window and (actor.pos - self.actor.pos):length() < 32 then
             if actor.name == 'Arrow' then
                 actor:destroy()
-                if math.abs(self.actor.spriteRenderer.angle - actor.spriteRenderer.angle) < 0.6 then
+                local angle = math.abs(self.actor.spriteRenderer.angle - actor.spriteRenderer.angle)
+                if angle > math.pi then
+                    angle = math.pi*2 - angle
+                end
+
+                if angle < 0.6 then
                     love.audio.newSource('sounds/victory.ogg','static'):play()
                     self.stateIndex = self.stateIndex + 1
                     if self.states[self.stateIndex] == nil then

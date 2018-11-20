@@ -17,7 +17,6 @@ function Arrow:awake()
             self.actor:destroy()
         end
     end
-
 end
 
 function Arrow:update(dt)
@@ -25,6 +24,11 @@ function Arrow:update(dt)
 
     local normal = self.actor.simplePhysics.velocity:normalized()
     self.actor.spriteRenderer.angle = math.atan(normal.y,normal.x)
+    
+    if normal.x < 0 then
+        self.actor.spriteRenderer.angle = -self.actor.spriteRenderer.angle + math.pi
+    end
+
     if math.abs(normal.x) < math.abs(normal.y) then
         if normal.y > 0 then
             self.actor.spriteRenderer.angle = self.actor.spriteRenderer.angle + math.pi/4

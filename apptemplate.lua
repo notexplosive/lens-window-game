@@ -22,7 +22,9 @@ end
 
 function AppTemplate:spawn(args)
     if self.singleton and Window.getOpen(self) then
-        Window.getOpen(self):bringToFront()
+        local w = Window.getOpen(self)
+        w:bringToFront()
+        w.visible = true
         return
     end
 

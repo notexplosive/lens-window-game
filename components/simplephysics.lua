@@ -15,10 +15,10 @@ function SimplePhysics:update(dt)
     local newPos = self.actor.pos + self.velocity
     local collided = false
 
-    if self.actor.collider and not self.actor.collider.collidedThisFrame or not self.actor.collider then
+    --if self.actor.collider and not self.actor.collider.collidedThisFrame or not self.actor.collider then
         self.actor.pos = newPos
-        collided = true
-    end
+        --collided = true
+    --end
 
     if self.actor.scene then
         local px,left,right = clamp(self.actor.pos.x,0,self.actor.scene.width)
@@ -26,7 +26,7 @@ function SimplePhysics:update(dt)
 
         -- this might mess with collision because pos was just definitively assigned
         if not collided then
-            self.actor.pos = Vector.new(px,py)
+            --self.actor.pos = Vector.new(px,py)
         end
 
         if left or right or top or bottom then

@@ -26,7 +26,11 @@ function TurretBehavior:update(dt)
         self.time = 0
         local bullet = Actor.new('Bullet',true)
         bullet.pos = self.actor.pos:clone()
-        bullet:addComponent(SimplePhysics).velocity = Vector.new(3,3)
+        local phy = bullet:addComponent(SimplePhysics)
+        phy.velocity = Vector.new(3,3)
+        phy.onHitEdge = function(self)
+            self.actor:destroy()
+        end
         bullet:addComponent(EmptyRenderer).draw = function(self,x,y)
             love.graphics.setColor(1,0.3,0)
             love.graphics.circle('fill',x,y,20)

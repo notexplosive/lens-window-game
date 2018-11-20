@@ -16,10 +16,12 @@ function Poptire:awake()
 
     self.actor.simpleCollider.onCollide = function(self,otherBody)
         if otherBody.actor.name == 'Arrow' then
+            otherBody.actor.simplePhysics.velocity.x = -otherBody.actor.simplePhysics.velocity.x
             self.actor.simplePhysics.velocity.y = 32
-            otherBody.actor:destroy()
         end
     end
+
+    self.sound = love.audio.newSource('sounds/pingpong.ogg', 'static')
 end
 
 function Poptire:draw()
@@ -37,10 +39,13 @@ function Poptire:update(dt)
         return
     end
 
+    self.sound:setPitch( 2 - self.actor.simpleCollider.radius/self.startRadius )
+
     if self.actor.scene then
         local mp = Vector.new(love.mouse.getPosition()) - self.actor.scene.window.pos - Vector.new(0,32)
         if (mp - self.actor.pos):length() < self.actor.simpleCollider.radius then
             if not self.hover then
+                self.sound:play()
                 self.hover = true
                 self.score = self.score + 1
                 self.actor.simpleCollider.radius = self.actor.simpleCollider.radius - 1
@@ -55,6 +60,13 @@ function Poptire:update(dt)
             self.hover = false
         end
 
+
+        local fixedX,hitLeft,hitRight = clamp(self.actor.pos.x,self.actor.simpleCollider.radius,self.actor.scene.width - self.actor.simpleCollider.radius)
+        if hitLeft or hitRight and math.abs(self.actor.simplePhysics.velocity.x) > 1 then
+            self.sound:play()
+            self.actor.simplePhysics.velocity.x = -self.actor.simplePhysics.velocity.x
+        end
+
         if self.actor.pos.y > self.actor.scene.height - self.actor.simpleCollider.radius then
             self.actor.simplePhysics.velocity.x = self.actor.simplePhysics.velocity.x/8
             self.actor.simplePhysics.velocity.y = -math.abs(self.actor.simplePhysics.velocity.y/2)
@@ -62,6 +74,8 @@ function Poptire:update(dt)
 
             if math.abs(self.actor.simplePhysics.velocity.y) < 2 then
                 self.actor.simplePhysics.velocity.y = 0
+            else
+                self.sound:play()
             end
             self.actor.popTire:resetScore()
         end
@@ -71,8 +85,7 @@ function Poptire:update(dt)
 
     if self.actor.simpleCollider.radius <= 10 then
         self.actor:destroy()
-        print('DESTROY')
-        -- drop some cool thing
+        -- drop key
     end
 end
 
