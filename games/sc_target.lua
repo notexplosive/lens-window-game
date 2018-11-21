@@ -9,7 +9,7 @@ local Actor = require('nx/game/actor')
 local TargetBehavior = require('components/target')
 local SpriteRenderer = require('nx/game/components/spriterenderer')
 
-local app = GameTemplate.new('Target',128 + 64,128 + 64)
+local app = GameTemplate.new('Target',256,256)
 app.icon = 'app'
 app.iconName = 'Target'
 
@@ -17,7 +17,7 @@ function app:onStart(window,args)
     local target = Actor.new('Target')
     target:addComponent(SpriteRenderer)
     target.spriteRenderer:setSprite(Assets.target)
-    target.pos = Vector.new((128+64)/2,(128+64)/2)
+    target.pos = Vector.new(128,128)
     
     target:addComponent(TargetBehavior)
     

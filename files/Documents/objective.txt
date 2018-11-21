@@ -1,4 +1,0 @@
-Objectives:
-    - Hit all my targets
-    - Find my keys
-    - Remember my password

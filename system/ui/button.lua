@@ -1,4 +1,4 @@
-local Vector = require('nx/Vector')
+local Vector = require('nx/vector')
 local ButtonBase = require('system/ui/buttonbase')
 
 local Button = {}

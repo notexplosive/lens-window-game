@@ -42,8 +42,9 @@ function app:onStart(window,args)
         UI.button.new('Shut down',leftSide,topSide + 32, function()
             love.event.quit(0)
         end),
-        UI.checkbox.new('Fullscreen',leftSide,topSide + 64,'fullscreenEnabled',true),
+        UI.checkbox.new('Play in Window',leftSide,topSide + 64,'windowed',true),
         UI.checkbox.new('Scanline shader',leftSide,topSide + 64 + 24,'shaderEnabled',true),
+        UI.checkbox.new('CRT shader',leftSide,topSide + 64 + 24*2,'CRTshaderEnabled',true)
     }
 end
 

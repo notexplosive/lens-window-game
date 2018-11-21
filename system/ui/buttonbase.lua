@@ -1,4 +1,4 @@
-local Vector = require('nx/Vector')
+local Vector = require('nx/vector')
 local ButtonBase = {}
 
 ButtonBase.font = love.graphics.newFont('fonts/Roboto-Light.woff',14)

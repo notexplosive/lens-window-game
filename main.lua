@@ -69,8 +69,7 @@ function lastUpdate(dt)
         end
     end
 
-    if State:get('fullscreenEnabled') ~= love.window.getFullscreen() then
-        print(State:get('fullscreenEnabled'),State.fullscreenEnabled)
-        love.window.setFullscreen(State:get('fullscreenEnabled'))
+    if State:get('windowed') == love.window.getFullscreen() then
+        love.window.setFullscreen(not State:get('windowed'))
     end
 end
