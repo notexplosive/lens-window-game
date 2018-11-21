@@ -83,6 +83,10 @@ function SpriteRenderer:setAnimation(animName)
     return self
 end
 
+function SpriteRenderer:setFrame(index)
+    self.currentFrame = self.currentAnimation.first + index - 2
+end
+
 function SpriteRenderer:getAnimation()
     if self.currentAnimation == nil then
         return 'nil'

@@ -13,4 +13,8 @@ Assets.target = Sprite.new('images/target.png',64,64)
 Assets.fan = Sprite.new('images/fan.png',64,64)
 Assets.fan:createAnimation('all',1,5)
 
+Assets.keys = Sprite.new('images/keys.png',64,64)
+Assets.keys:createAnimation('all',1,3)
+Assets.lock = Sprite.new('images/locks.png',64,64)
+
 return Assets

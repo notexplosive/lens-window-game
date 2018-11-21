@@ -1,5 +1,7 @@
 local Target = {}
 local State = require('system/state')
+local Actor = require('nx/game/actor')
+local KeyBehavior = require('components/key')
 Target.name = 'target'
 
 function Target.create()
@@ -45,6 +47,10 @@ function Target:update(dt)
         end
 
         if self.states[self.stateIndex] == nil then
+            local newActor = Actor.new("Key",true)
+            newActor.pos = self.actor.pos:clone()
+            newActor:addComponent(KeyBehavior)
+            self.actor.scene:addActor(newActor)
             self.actor:destroy()
         end
     end

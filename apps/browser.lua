@@ -20,11 +20,11 @@ function Browser:draw(selected,mp)
     love.graphics.setColor(1,1,1,1)
     local w,h = self.canvas:getDimensions()
     love.graphics.rectangle('fill',1,1,w-2,h-2)
+    love.graphics.setColor(0,0,0)
     if not (State:get('redKey') and State:get('blueKey') and State:get('blackKey')) then
-        love.graphics.setColor(0,0,0)
         love.graphics.print('Connecting to information superhighway...')
     else
-        love.graphics.print('Congratulations! You won!\n\nThank you for playing!\n\nIt is now safe to turn off your computer')
+        love.graphics.print('Congratulations! You won!\n\nThank you for playing!!\n\nIt is now safe to turn off your computer.')
     end
 end
 

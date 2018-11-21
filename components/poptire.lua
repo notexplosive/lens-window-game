@@ -1,5 +1,7 @@
 local Vector = require('nx/vector')
 local State = require('system/state')
+local KeyBehavior = require('components/key')
+local Actor = require('nx/game/actor')
 local Poptire = {}
 
 Poptire.name = 'popTire'
@@ -94,8 +96,11 @@ function Poptire:update(dt)
     self.actor.simplePhysics.velocity = self.actor.simplePhysics.velocity + Vector.new(0,dt) * 40
 
     if self.score >= 20 then
+        local newActor = Actor.new("Key",true)
+        newActor.pos = self.actor.pos:clone()
+        newActor:addComponent(KeyBehavior).keyType = 2
+        self.actor.scene:addActor(newActor)
         self.actor:destroy()
-        -- drop key
     end
 end
 

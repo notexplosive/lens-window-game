@@ -1,5 +1,7 @@
 local Vector = require('nx/vector')
 local SimpleCollider = require('components/simplecollider')
+local Actor = require('nx/game/actor')
+local KeyBehavior = require('components/key')
 local PlatformerBehavior = {}
 
 PlatformerBehavior.name = 'platformerBehavior'
@@ -17,6 +19,14 @@ function PlatformerBehavior:awake()
         if other.actor.name == 'Arrow' then
             love.audio.newSource('sounds/ouch.ogg','static'):play()
             other.actor:destroy()
+            
+            local newActor = Actor.new("Key",true)
+            newActor:addComponent(KeyBehavior)
+            newActor.key.keyType = 3
+            newActor.pos = self.actor.pos:clone()
+            self.actor.scene:addActor(newActor)
+
+            self.actor:destroy()
         end
     end
 end

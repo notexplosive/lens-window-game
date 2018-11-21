@@ -89,7 +89,7 @@ end
 function app:keyPress(key)
     self.state.frame = 0
     if self.state.storedText == nil then
-        local defaultPhrase = "The quick brown fox jumped over the lazy\n\nI didn't get around to actually\nimplementing this feature.\n\n\nfollow me on twitter for updates on the\nfull version of this game"
+        local defaultPhrase = "The quick brown fox jumped over the lazy\n\nI didn't get around to actually\nimplementing this feature.\n\n\nshout outs to simple flips"
         local char = defaultPhrase:charAt(self.state.text:len()+1)
         if char then
             self.state.text = self.state.text .. char
