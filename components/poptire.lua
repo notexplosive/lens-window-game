@@ -95,7 +95,7 @@ function Poptire:update(dt)
 
     self.actor.simplePhysics.velocity = self.actor.simplePhysics.velocity + Vector.new(0,dt) * 40
 
-    if self.score >= 20 then
+    if self.score >= 30 then
         local newActor = Actor.new("Key",true)
         newActor.pos = self.actor.pos:clone()
         newActor:addComponent(KeyBehavior).keyType = 2

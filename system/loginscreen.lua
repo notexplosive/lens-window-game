@@ -49,7 +49,7 @@ function LoginScreen:draw()
     local UIRoot = Vector.new(screenWidth/2 + 10, screenHeight/2)
 
     love.graphics.setFont(LoginScreen.sideKickFont)
-    love.graphics.print('Welcome back!\nHazel',UIRoot.x,UIRoot.y - 64)
+    love.graphics.print('Welcome back!',UIRoot.x,UIRoot.y - 64)
 
     for i,v in ipairs(self.UIElements) do
         v.pos = UIRoot:clone() + Vector.new(0,(i-1) * 26)

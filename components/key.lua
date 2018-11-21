@@ -19,6 +19,7 @@ function KeyBehavior:awake()
     self.actor.simpleCollider.onCollide = function(self,otherbody)
         if otherbody.actor.name == 'ShadowMan' then
             State:persist(self.actor.key.keyName)
+            love.audio.newSource('sounds/good.ogg','static'):play()
         end
     end
 
@@ -49,7 +50,7 @@ function KeyBehavior:update(dt)
             self.actor.pos.y = posY
             self.hitBottom = true
             self.actor.simplePhysics.velocity.y = 0
-            love.audio.newSource('sounds/no.ogg', 'static'):play()
+            love.audio.newSource('sounds/key_impact.ogg', 'static'):play()
         end
     else
         -- no scene

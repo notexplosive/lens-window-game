@@ -37,7 +37,7 @@ function Browser:update(dt)
                 popup.title = 'NetScrape Error'
                 popup.state.label = 'Unspecified Network Error'
                 if self.state.childCounter == 5 then
-                    popup.state.label = "It's not time yet"
+                    popup.state.label = "Come back with the keys"
                 end
                 if self.state.childCounter == 6 then
                     jumpScare()

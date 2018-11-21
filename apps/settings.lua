@@ -30,7 +30,7 @@ function app:onStart(window,args)
     local leftSide = 16
     local topSide = 64
     self.buttons = {
-        UI.button.new('Log Off',leftSide,topSide, function()
+        UI.button.new('Log Out',leftSide,topSide, function()
             if not State:get('loggingOff') then
                 State:set('loggingOff')
                 love.audio.newSource('sounds/shutdown.ogg', 'static'):play()
@@ -39,18 +39,22 @@ function app:onStart(window,args)
                 LoginScreen.loginInProgress = false
             end
         end),
-        UI.button.new('Shut down',leftSide,topSide + 32, function()
+        UI.button.new('Shut Down',leftSide,topSide + 32, function()
             love.event.quit(0)
         end),
-        UI.checkbox.new('Play in Window',leftSide,topSide + 64,'windowed',true),
-        UI.checkbox.new('Scanline shader',leftSide,topSide + 64 + 24,'shaderEnabled',true),
-        UI.checkbox.new('CRT shader',leftSide,topSide + 64 + 24*2,'CRTshaderEnabled',true)
+        UI.button.new('Change Wallpaper',leftSide,topSide + 128 - 32, function()
+            LaunchApp('explorer','Pictures')
+        end),
+        UI.checkbox.new('Windowed',leftSide,topSide + 128,'windowed',true),
+        UI.checkbox.new('Scanline shader',leftSide,topSide + 128 + 24,'shaderEnabled',true),
+        UI.checkbox.new('CRT shader',leftSide,topSide + 128 + 24*2,'CRTshaderEnabled',true)
     }
 end
 
 function app:draw(selected,mp)
     love.graphics.setColor(0,0,0,1)
     love.graphics.print('General Settings',16,20)
+    love.graphics.print('Graphics',16,128)
 
     for i,button in ipairs(self.buttons) do
         -- This won't work with scrolling I don't think

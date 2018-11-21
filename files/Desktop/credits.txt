@@ -13,9 +13,6 @@ Fonts:
 ChevyRay - SoftSquare, Vector Mono
 Roboto - Christian Robertson
 
-Music:
-
-
 Sounds:
 freesound.org
     Patrick Hunt
@@ -27,8 +24,10 @@ freesound.org
     LiamG_SFX
     13FPanska_Marval_Lukas
     InspectorJ
+    syseQ
 
 
 Testing & Feedback:
 Jackelmore
 Wildcarde
+TheSlowHipster

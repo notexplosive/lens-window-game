@@ -60,19 +60,9 @@ end
 -- EVENTS --
 -- TODO: create an "events" subfolder?
 function jumpScare()
-    for i,v in ipairs(Window.getAll()) do
-        v.jumpScare = true
-        v.fullscreen = false
-        v:killUntil(math.random(30,80) / 60)
-    end
-
-    local snd = love.audio.newSource('sounds/no2.ogg','static')
-    snd:setPitch(0.4)
-    snd:play()
-
     State:persist('hasSeenJumpScare')
 
-    Timer.new(5,function() LaunchApp('popup','You were warned') end)
+    Timer.new(3,function() LaunchApp('popup','Come back with the keys') end)
 end
 
 function logIn()
