@@ -14,6 +14,8 @@ local Browser = app
 function Browser:onStart(window,args)
     self.state.spawnTimer = 1
     self.state.childCounter = 0
+    self.state.time = 0
+    self.state.timeScale = 1
 end
 
 function Browser:draw(selected,mp)
@@ -53,6 +55,19 @@ function Browser:update(dt)
                     end
                 end
             end
+        end
+    else
+        -- Win condition
+        self.state.time = self.state.time - dt
+        if self.state.time < 0 then
+            self.state.time = (math.random(3)) * self.state.timeScale
+            self.state.timeScale = self.state.timeScale * 0.8
+            if self.state.timeScale < 0.0001 then
+                State:deleteSave()
+                love.event.quit(0)
+            end
+            local popUp = LaunchApp('popup','CONGRATULATIONS\nYOU WON')
+            popUp.pos = Vector.new(math.random(love.graphics.getWidth()),math.random(love.graphics.getHeight()))
         end
     end
 end

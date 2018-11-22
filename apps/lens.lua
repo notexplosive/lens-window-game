@@ -34,6 +34,16 @@ function app:draw(selected,mp)
 
     local tuples = getAllStarActorsAndWindows()
 
+    for i,window in ipairs(Window.getAll()) do
+        if window.visible then
+            local x,y,h,w = window:getCanvasPositions()
+            x = x - self.pos.x
+            y = y - self.pos.y  -32
+            love.graphics.setColor(0,0,0,0.5)
+            love.graphics.rectangle('line',x,y,h,w)
+        end
+    end
+
     for i,act in ipairs(self.state.actors) do
         append(tuples,{actor=act,window=nil})
     end
@@ -65,7 +75,7 @@ function app:draw(selected,mp)
                 local newOwner = nil
                 
                 for j,v in ipairs(windows) do
-                    if v ~= self and isWithinBox(tuple.actor.pos.x,tuple.actor.pos.y,windows[j]:getCanvasPositions()) then
+                    if v ~= self and isWithinBox(tuple.actor.pos.x,tuple.actor.pos.y,windows[j]:getBackgroundPositions()) then
                         newOwner = windows[j]
                         break
                     end

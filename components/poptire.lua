@@ -49,7 +49,11 @@ function Poptire:update(dt)
 
     local mp = Vector.new(love.mouse.getPosition())
     if self.actor.scene then
-        mp = Vector.new(love.mouse.getPosition()) - self.actor.scene.window.pos - Vector.new(0,32)
+        if not gDragging then
+            mp = Vector.new(love.mouse.getPosition()) - self.actor.scene.window.pos - Vector.new(0,32)
+        else
+            mp = Vector.new(-100,-100)
+        end
         local fixedX,hitLeft,hitRight = clamp(self.actor.pos.x,self.actor.simpleCollider.radius,self.actor.scene.width - self.actor.simpleCollider.radius)
         if hitLeft or hitRight and math.abs(self.actor.simplePhysics.velocity.x) > 1 then
             self.sound:play()
@@ -61,6 +65,7 @@ function Poptire:update(dt)
                 self.actor.simplePhysics.velocity.x = -math.abs(self.actor.simplePhysics.velocity.x)/2
             end
         end
+        self.actor.pos.x = fixedX
 
         if self.actor.pos.y > self.actor.scene.height - self.actor.simpleCollider.radius then
             self.actor.simplePhysics.velocity.x = self.actor.simplePhysics.velocity.x/8

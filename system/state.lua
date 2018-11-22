@@ -96,6 +96,10 @@ function _saveToDisk(flagName,val)
     love.filesystem.write('savefile',newSaveData)
 end
 
+function State:deleteSave()
+    love.filesystem.remove('savefile')
+end
+
 if not love.filesystem.getInfo('savefile') then
     love.filesystem.write('savefile','')
 end

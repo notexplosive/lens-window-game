@@ -9,7 +9,7 @@ local Actor = require('nx/game/actor')
 local PlatformerComponent = require('components/platformer')
 local SpriteRenderer = require('nx/game/components/spriterenderer')
 
-local app = GameTemplate.new('Shadow Man',300,300)
+local app = GameTemplate.new('Shadow',300,300)
 app.icon = 'app'
 app.iconName = 'Shadow'
 

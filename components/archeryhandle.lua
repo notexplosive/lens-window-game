@@ -31,7 +31,7 @@ function ArcheryHandle:draw()
 
     love.graphics.setColor(1,1,1,1)
     
-    if (self.actor.pos - mp):length() < 10 then
+    if (self.actor.pos - mp):length() < 24 then
         if gClickedThisFrame and not self.grabbed then
             self.grabbed = true
         end

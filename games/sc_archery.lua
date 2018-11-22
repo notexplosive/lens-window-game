@@ -9,7 +9,7 @@ local Actor = require('nx/game/actor')
 local ArcheryHandle = require('components/archeryhandle')
 local SpriteRenderer = require('nx/game/components/spriterenderer')
 
-local app = GameTemplate.new('Archery Practice',300,128)
+local app = GameTemplate.new('Archery Practice',364,128)
 app.icon = 'app'
 app.iconName = 'Archery'
 
