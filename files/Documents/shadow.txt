@@ -1,3 +1,5 @@
 He lost his keys
 
-He can move with arrows, but he can't go anywhere.
+He can move with buttons, but he can't go anywhere.
+
+Bring him the keys and he will restart your router

@@ -58,6 +58,7 @@ function Browser:update(dt)
         end
     else
         -- Win condition
+        self.enabledControlButtons = {false,false,false}
         self.state.time = self.state.time - dt
         if self.state.time < 0 then
             self.state.time = (math.random(3)) * self.state.timeScale
