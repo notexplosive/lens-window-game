@@ -4,7 +4,7 @@ local Icons = require('system/icons')
 local AppTemplate = require('apptemplate')
 local Filesystem = require('system/filesystem')
 
-local app = AppTemplate.new('File Locator',450,450)
+local app = AppTemplate.new('File Locator',320,450)
 app.icon = 'locator'
 app.iconName = 'Locator'
 app.showOnDesktop = true

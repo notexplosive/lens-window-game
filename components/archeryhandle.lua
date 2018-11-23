@@ -26,7 +26,7 @@ function ArcheryHandle:draw()
     if not selected then
         mp = Vector.new(0,0)
     end
-    mp.x = clamp(mp.x, 0, self.actor.scene.width-100)
+    mp.x = clamp(mp.x, 0, self.actor.scene.width-128-32)
     mp.y = clamp(mp.y, 0, self.actor.scene.height)
 
     love.graphics.setColor(1,1,1,1)
@@ -81,7 +81,7 @@ function ArcheryHandle:draw()
         self.wiggleframe = power
     end
 
-    love.graphics.setColor(1,0,1,1)
+    love.graphics.setColor(0.6,0.6,1,1)
     if self.grabbed then
         
     else
