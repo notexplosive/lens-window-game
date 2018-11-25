@@ -4,7 +4,7 @@ local Icons = require('system/icons')
 local AppTemplate = require('apptemplate')
 local Apps = require('apps')
 local Filesystem = require('system/filesystem')
-
+--[[
 -- EXPLORER
 Apps.explorer = AppTemplate.new('File Locater','locater',450,450);
 
@@ -142,3 +142,4 @@ function drawIcons(state,selected,mp,desktop,self)
 
     love.graphics.setFont(oldFont)
 end
+]]
